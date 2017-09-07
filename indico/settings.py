@@ -271,7 +271,7 @@ DATABASES['default'].update(db_from_env)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
-ALLOWED_HOSTS = ['https://indikko-pr-2.herokuapp.com', 'www.indicoapp.com', 'www.indikko.com', 'indikko.com', 'indicoapp.com', 'indikko.herokuapp.com', 'indikko.com.herokudns.com']
+ALLOWED_HOSTS = ['https://indikko-staging.herokuapp.com', 'www.indicoapp.com', 'www.indikko.com', 'indikko.com', 'indicoapp.com', 'indikko.herokuapp.com', 'indikko.com.herokudns.com']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
