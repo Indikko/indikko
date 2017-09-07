@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>{% load staticfiles %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Home | Indico</title>
+
+<!-- core CSS -->
+  <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap-social.css'%}" rel="stylesheet">
+  <link href="{% static 'css/font-awesome.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/animate.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/prettyPhoto.css'%}" rel="stylesheet">
+  <link href="{% static 'css/main.css'%}" rel="stylesheet">
+  <link href="{% static 'css/responsive.css'%}" rel="stylesheet">
+  <link href="{% static 'css/style.css'%}" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+  <link rel="shortcut icon" href="{% static 'images/ico/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'images/ico/apple-touch-icon-144-precomposed.png'%}">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'images/ico/apple-touch-icon-114-precomposed.png'%}">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'images/ico/apple-touch-icon-72-precomposed.png'%}">
+  <link rel="apple-touch-icon-precomposed" href="{% static 'images/ico/apple-touch-icon-57-precomposed.png'%}">
+</head>
+
+<body class="homepage">
+  <div id="wrapper">
+    <header id="header">
+        <nav class="navbar navbar-inverse" role="banner">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+          </div>
+          <div class="container">
+            <a href="{%url 'indico:home' %}"><img src="{% static 'images/logo.png'%}" /></a>
+              <div class="collapse navbar-collapse navbar-right">
+                  <ul class="nav navbar-nav">
+                      <li><a href="{%url 'indico:home' %}">Entrar</a></li>
+                      <li><a href="{%url 'indico:signup' %}">Cadastrar-se</a></li>
+                      <li><a href="{% url 'password_reset_recover' %}">Forgot your password ?</a></li>
+                  </ul>
+              </div>
+          </div><!--/.container-->
+        </nav><!--/nav-->
+    </header><!--/header-->
+    <section id="passrecovery" class="no-margin">
+      <div class="container">
+        <div class="row">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </section>
+    <div id="push"></div>
+  </div>
+
+  <footer id="footer" class="midnight-blue">
+      <div class="container">
+          <div class="row">
+              <div class="col-sm-6">
+                  &copy; 2016 <a target="_blank" href="#">Indikko</a>. All Rights Reserved.
+				  &nbsp;-&nbsp;E-mail para contato: <a href="mailto:suporte@indicoapp.com">suporte@indicoapp.com</a>
+				  V0.9
+              </div>
+          </div>
+      </div>
+  </footer><!--/#footer-->
+
+  <script src="{% static 'js/jquery.js'%}"></script>
+  <script src="{% static 'js/bootstrap.min.js'%}"></script>
+  <script src="{% static 'js/jquery.prettyPhoto.js'%}"></script>
+  <script src="{% static 'js/jquery.isotope.min.js'%}"></script>
+  <script src="{% static 'js/main.js'%}"></script>
+  <script src="{% static 'js/wow.min.js'%}"></script>
+  <script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/bb265066-845a-4358-b934-11f92f48123b-loader.js"></script>
+</body>
+
+</html>

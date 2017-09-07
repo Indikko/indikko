@@ -1,0 +1,1056 @@
+{% extends "core/base.html" %}
+{% load staticfiles tz %}
+{% load app_extras %}
+{% block title %}Indikko - Pesquisa de profissionais{% endblock %}
+
+{% block local_css %}
+<style>
+    .div_unactive{
+        background-image: url("/static/images/chkBoxUnselectedPeq.png");
+        background-repeat: no-repeat;
+        padding-left: 23px;
+    }
+    .div_active{
+        background-image: url("/static/images/chkBoxSelectedPeq.png");
+        background-repeat: no-repeat;
+        padding-left: 23px;
+    }
+    
+.service-type{
+    width: 60%;
+    float: left;
+    height: 28px;
+    overflow: hidden;
+}
+
+.schedule-button{
+    background-color: #4d2e80;
+    color: white;
+    font-size: 12px;
+    margin-right: 10px;
+    padding: 5px 10px;
+}
+
+.price-tag{
+    left: 67.565%;
+    position: absolute;
+}
+
+
+.overlays {
+  visibility: hidden;
+  position: absolute;
+  color: #979797;
+  text-align:center;
+  z-index: 100;
+}
+
+.professional-bar{
+   margin-left: 10px;
+   margin-right: 10px; 
+   width: 94%
+}
+
+
+.overlays .inside{
+  width: 190px;
+  background-color: #fff;
+  border:1px solid #000;
+  text-align:left;,
+
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.inside .row{
+    padding: 10px;
+    font-size: 22px;
+}
+
+.professional-box {
+    text-align: left;
+    font-family: robotoLight;
+    font-size: 36px;
+    color: black;
+}
+
+.professional-box a{
+    color: black;
+    }
+
+.professional-box p{
+    font-size: 24px;
+    line-height: 28px;
+    margin: 0px;
+}
+
+.professional-box .box-icons{
+    width: 60px;
+    height: 50px;
+}
+
+.professional-box .phone-icons{
+    width: 52px;
+    height: 52px;
+    margin-left: 15px;
+}
+
+.professional-box .row{
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+}
+
+
+.score{
+    float: right;
+	width: 120px;
+	height: 90px;
+    text-align: center;
+}
+
+.background-score span{
+    position: relative;
+    top: 35%;
+    left: 5%;
+    color: white;
+    font-weight: bold;
+    font-family: robotoMedium;
+    font-size: 40px;
+
+}
+.delivery-icon{
+    width: 28px;
+    height: 28px;
+}
+.background-score{
+    background-color: #715899;   
+	width:100%;
+	height: 100%;
+	-webkit-clip-path: polygon(0 16%, 100% 0, 100% 84%, 0 100%);
+	clip-path: polygon(0 16%, 100% 0, 100% 84%, 0 100%);
+}
+
+#check_evaluation{
+    display: inline;
+}
+
+.profile-pic{
+    width: 250px;
+    height: 250px;
+    margin-right: 10px;
+    border: 1px solid black;
+}
+
+.filter{
+    float: left;
+    font-size: 24px;
+    margin-left: 13.5%;
+}
+.container-fluid{
+	margin-left:10px;
+}
+
+.service-provided, .service-provided p{
+    display: inline;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.differential{
+    overflow: hidden;
+    width:334px;
+    height:145px;
+}
+
+.service-provided hr{
+    margin: 0px;
+}
+
+.my-container .header{
+    font-weight: normal;
+    padding: 0px;
+}
+
+.my-container .content{
+    color: black;
+    padding: 0px;
+}
+
+.more-service-button{
+    background-color: #4d2e80;
+    color: white;
+    font-size: 18px;
+    margin-left: 32%;
+    padding: 10px 10px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.modal-dialog{
+    font-size: 18px;
+}
+
+.modal-dialog .col-sm-12{
+    margin-bottom: 5px;
+}
+
+.modal-body{
+    line-height: 26px;
+}
+
+.btn-default {
+    background-color: #4d2e80;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) and (min-width: 660px){
+
+    .service-type{
+        height: 28px;
+    }
+
+    .price-tag{
+        left: 70.565%;
+        position: absolute;
+    }
+
+    .inside .row{
+        font-size: 22px;
+    }
+
+    .overlays .inside{
+        width: 190px;
+        padding: 10px;
+    }
+
+    .background-score span{
+        position: relative;
+        top: 35%;
+        left: 5%;
+        color: white;
+        font-weight: bold;
+        font-family: robotoMedium;
+        font-size: 40px;
+
+    }
+
+    .score{
+        float: right;
+        width: 120px;
+        height: 90px;
+        text-align: center;
+    }
+
+    .background-score{
+        background-color: #715899;   
+        width:100%;
+        height: 100%;
+        -webkit-clip-path: polygon(0 16%, 100% 0, 100% 84%, 0 100%);
+        clip-path: polygon(0 16%, 100% 0, 100% 84%, 0 100%);
+    }
+
+
+    .professional-box .phone-icons{
+        width: 52px;
+        height: 52px;
+    }
+
+    .filter{
+        font-size: 24px;
+        margin-left: 9.5%;
+    }
+
+    .differential{
+        height: 90px;
+
+    }
+
+    .professional-box .box-icons{
+        width: 60px;
+        height: 50px;
+        margin-top: 5px;
+    }
+
+    .service-provided{
+        font-size: 24px;
+    }
+
+    .professional-box {
+        font-size: 28px;
+    }
+
+    .professional-box p{
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    .profile-pic{
+        width: 226px;
+        height: 226px;
+    }
+}
+
+
+@media screen and (max-width: 650px) and (min-width: 410px){
+
+    .service-type{
+        height: 20px;
+    }
+    .price-tag{
+        left: 70.565%;
+        position: absolute;
+    }
+
+    .filter{
+        font-size: 14px;
+        margin-left: 9.8%;
+    }
+
+    .inside .row{
+        font-size: 16px;
+    }
+
+
+    .professional-box .box-icons{
+        width: 35px;
+        height: 32px;
+    }
+
+    .professional-box .phone-icons{
+        width: 32px;
+        height: 32px;
+    }
+
+    .professional-box{
+        font-size: 22px;
+
+    }
+
+    .professional-box p{
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .overlays .inside{
+        width: 140px;
+    }
+
+    .profile-pic{
+        width: 120px;
+        height: 120px;
+    }
+
+    .skills-text{
+        font-size: 12px;
+    }
+
+    .differential{
+        width: 190px;
+        height: 51px;
+    }
+
+    
+
+    .service-provided, .service-provided p{
+        display: inline;
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    .service-provided hr{
+        margin: 0px;
+    }
+
+    .my-container .header{
+        font-weight: normal;
+        padding: 0px;
+    }
+
+    .my-container .content{
+        color: black;
+        padding: 0px;
+    }
+
+    .more-service-button{
+        background-color: #4d2e80;
+        color: white;
+        font-size: 12px;
+        margin-left: 32%;
+        padding: 5px 10px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 400px) and (min-width: 350px){
+
+
+
+    .service-type{
+        height: 20px;
+    }
+
+    .price-tag{
+        left: 68.565%;
+        position: absolute;
+    }
+
+    .filter{
+        font-size: 14px;
+        margin-left: 7.8%;
+    }
+
+    .inside .row{
+        font-size: 16px;
+    }
+
+
+    .score{
+        width: 80px;
+        height: 50px;
+    }
+
+    .background-score span{
+        top: 22%;
+        left: 8%;
+        font-size: 32px;
+
+    }
+
+
+    .differential{
+        width: 154px;
+        height: 38px;
+    }
+
+    .professional-box .box-icons{
+        width: 35px;
+        height: 32px;
+    }
+
+    .professional-box .phone-icons{
+        width: 32px;
+        height: 32px;
+    }
+
+    .professional-box{
+        font-size: 16px;
+    }
+
+    .professional-box p{
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .overlays .inside{
+        width: 140px;
+    }
+
+    .profile-pic{
+        width: 120px;
+        height: 120px;
+    }
+
+    .skills-text{
+        font-size: 12px;
+    }
+
+    
+
+    .service-provided, .service-provided p{
+        display: inline;
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    .service-provided hr{
+        margin: 0px;
+    }
+
+    .my-container .header{
+        font-weight: normal;
+        padding: 0px;
+    }
+
+    .my-container .content{
+        color: black;
+        padding: 0px;
+    }
+
+    .more-service-button{
+        background-color: #4d2e80;
+        color: white;
+        font-size: 12px;
+        margin-left: 32%;
+        padding: 5px 10px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+}
+
+
+@media screen and (max-width: 350px) and (min-width: 310px){
+
+    .service-type{
+        height: 20px;
+    }
+    .delivery-icon{
+        width: 15px;
+        height: 15px;
+    }
+
+    .price-tag{
+        left: 64.565%;
+        position: absolute;
+    }
+
+    .professional-box .box-icons{
+        width: 35px;
+        height: 32px;
+    }
+
+    .professional-box .phone-icons{
+        width: 32px;
+        height: 32px;
+    }
+
+    .score{
+        width: 80px;
+        height: 50px;
+    }
+
+    .background-score span{
+        top: 22%;
+        left: 8%;
+        font-size: 32px;
+
+    }
+
+    .inside .row{
+        font-size: 12px;
+    }
+
+
+    .professional-box{
+        font-size: 16px;
+
+    }
+
+    .professional-box p{
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .differential{
+        width: 134px;
+        height: 38px;
+    }
+
+    .overlays .inside{
+        width: 130px;
+    }
+
+    .profile-pic{
+        width: 120px;
+        height: 120px;
+    }
+
+    .skills-text{
+        font-size: 12px;
+    }
+
+    .filter{
+        font-size: 12px;
+        margin-left: 6.5%;
+    }
+
+    .service-provided, .service-provided p{
+        display: inline;
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    .service-provided hr{
+        margin: 0px;
+    }
+
+    .my-container .header{
+        font-weight: normal;
+        padding: 0px;
+    }
+
+    .my-container .content{
+        color: black;
+        padding: 0px;
+    }
+
+    .more-service-button{
+        background-color: #4d2e80;
+        color: white;
+        font-size: 12px;
+        margin-left: 32%;
+        padding: 5px 10px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+
+}
+
+
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+
+
+<h2 style="margin-left: 10px;">Buscar Profissional:</h2>
+
+<form method="post" style="margin-top: 30px; margin-bottom: 20px;">
+    {% csrf_token %}<input 
+                ng-model="criterioDeBusca"
+                type="text"
+                class="form-control input-lg professional-bar" 
+                name="search_field" 
+                placeholder="Nome ou sobrenome" />
+</form>
+
+<div class="container-fluid" style="background-color: #fff; text-align: center; padding: 0px; border-radius: 10px;" ng-controller="CategoryController">
+    <div class="row">
+    {% if not user.is_anonymous %}
+        <input type="hidden" id="user_id" value="{{user.id}}" />
+    {% endif %}
+        <div class="filter">
+            <span>Ordenar </span>
+            <span id="order-open" class="glyphicon glyphicon-menu-down" style="display: inline;"></span>
+            <span id="order-close" class="glyphicon glyphicon-remove"  style="display: none;"></span>
+        </div>
+        <div class="filter">
+            <span>Diferenciais</span>
+            <span id="dif-open" class="glyphicon glyphicon-menu-down" style="display: inline;"></span>
+            <span id="dif-close" class="glyphicon glyphicon-remove"  style="display: none;"></span>
+        </div>
+        <div class="filter">
+                {% if neighborhoods %}
+                        <span>Bairros</span>
+                        <span id="neigh-open" class="glyphicon glyphicon-menu-down" style="display: inline;"></span>
+                        <span id="neigh-close" class="glyphicon glyphicon-remove"  style="display: none;"></span>
+                {% endif %}
+        </div>
+    </div>
+    <div id="overlay-order" class="overlays">
+                <div class="inside">
+                    <div class="row">
+                        <input type="checkbox" name="trust" ng-class="{'active': critOrderBy=='get_average_trust'}" ng-click="orderBy('get_average_trust')" > Confiança
+                        <br>
+                        <input type="checkbox" name="quality" ng-class="{'active': critOrderBy=='get_average_quality'}" ng-click="orderBy('get_average_quality')" > Qualidade
+                        <br>
+                        <input type="checkbox" name="punctuality" ng-class="{'active': critOrderBy=='get_average_punctuality'}" ng-click="orderBy('get_average_punctuality')" > Pontualidade
+                        <br>
+                        <input type="checkbox" name="price" ng-class="{'active': critOrderBy=='price'}"  ng-click="orderBy('price')" > Preço
+                    </div>
+                </div>
+            </div>
+    <div id="overlay-dif" class="overlays">
+        <div class="inside">
+            <div class="row">
+                {% for skill in skills %}
+                    <div class="div_unactive" ng-class="{'div_active': lstSkillFilter.indexOf('{{skill}}')>-1}" ng-click="addSkillFilter('{{skill}}')" />
+                        {{skill|truncatechars:45}}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="overlay-neigh" class="overlays">
+        <div class="inside">
+            <div class="row">
+                {% for nh in neighborhoods %}
+                    <div class="div_unactive" ng-class="{'div_active': lstNeighborhoodFilter.indexOf('{{nh}}')>-1}" ng-click="addNeighborhoodFilter('{{nh}}')">{{nh|truncatechars:45}}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+        
+    <div class="row">
+        <div ng-init="init('{{category}}')">
+            <div class="row" ng-repeat="w in category.workers  | filter:filterSkill | filter:filterNeighborhood | filter:{'fullname':criterioDeBusca} " on-finish-render="exec_js">
+                <div class="professional-box">
+                    <hr style="border: 1px solid #f6f4f9;" />
+                    <div class="row">
+                            {% if not user.is_anonymous %}
+                                {%verbatim%}
+                                <a href="/usuario/profissional/{{w.id}}/"><img class="profile-pic"  style="float: left;" ng-if="w.photo_url" ng-src="{{w.photo_url}}" /></a>
+                                {%endverbatim%}
+                            {% else %}
+                                <a class="gohome" href="/try_login/"><img class="profile-pic"  style="float: left;" ng-if="{%verbatim%}w.photo_url{%endverbatim%}" ng-src="{%verbatim%}{{w.photo_url}}{%endverbatim%}" /></a>
+                            {% endif %}
+                            <a href="/usuario/profissional/{%verbatim%}{{w.id}}{%endverbatim%}/"><img class="profile-pic"  style="float: left;" ng-if="!w.photo_url" src="{%static 'images/silhouette.png'%}" /></a>
+                            <div class="score">
+                                    <div class="background-score">
+                                        <span ng-bind="w.rate"><strong>Rate</strong></span>
+                                    </div>
+                                </div>
+                            {% if not user.is_anonymous %}
+                                <strong style="font-family: robotoMedium;"><a href="/usuario/profissional/{%verbatim%}{{w.id}}{%endverbatim%}/" ng-bind="w.first_name">Nome</a></strong>
+                                <img class="phone-icons" data-toggle="popover" title="Telefone" data-content="{%verbatim%}{{w.full_phone}}{%endverbatim%}" id="btn_like_{%verbatim%}{{w.id}}{%endverbatim%}" src="{% static 'images/layout/icon-fone.png' %}" style="cursor:pointer;" />
+                            {% else %}
+                                <strong style="font-family: robotoMedium;"><a class="gohome" href="/try_login/" ng-bind="w.first_name">Nome</a></strong>
+                                <a class="gohome" href="/try_login/"><img class="phone-icons" title="Telefone" id="btn_like_{%verbatim%}{{w.id}}{%endverbatim%}" src="{% static 'images/layout/icon-fone.png' %}" style="cursor:pointer;" /></a>
+                            {% endif %}
+                                <div class="row">
+                                    <p style="font-family: robotoMedium; padding-bottom: 10px;" ng-bind="w.get_first_place" >Endereço</p>
+                                    <div style="font-family: robotoMedium;" ng-if="w.attendance_in_domicile">
+                                        <p><img class="delivery-icon" src="{% static 'images/layout/delivery.png' %}"> Delivery</p>
+                                    </div>
+                                    <div style="font-family: robotoMedium;" ng-if="w.costumer_service">
+                                        <p ng-if="!w.place_to_work">Atendimento em estabelecimento</p>
+                                        <p ng-if="w.place_to_work">Atende no {%verbatim%}{{w.place_to_work}}{%endverbatim%}</p>
+                                    </div>
+                                    <div style="margin-top: 0px">
+                                    <p class="differential">
+                                    <span class="skills-text" ng-repeat="s in w.skills"><span ng-bind="s.description"></span><br></span>
+                                    </p>
+                                    </div>
+                                    
+                                    <!--{% if not user.is_anonymous %}
+                                    <a class="schedule-button" style="float: right;" href="/usuario/profissional/{%verbatim%}{{w.id}}{%endverbatim%}/">Agendar</a>
+                                    {% else %}
+                                    <a class="schedule-button" style="float: right;" href="/try_login/">Agendar</a>
+                                    {% endif %}-->
+                                    
+
+                                    <a href="#" 
+                                        data-toggle="modal" 
+                                        data-target="#rankModal_{%verbatim%}{{w.id}}{%endverbatim%}"
+                                        ng-show="w.showFormForEvaluate">
+                                        <img id="btn_like_{%verbatim%}{{w.id}}{%endverbatim%}" class="box-icons" src="{% static 'images/icon-indicacoes.png' %}">
+                                    </a>    
+                                            
+                                            
+                                            <input type="hidden" ng-bind="resetcounter()">
+                                            {% for we in all_evaluations%}
+                                                
+                                                <div id="check_evaluation" ng-if="w.id == {{we.worker.id}}">
+                                                    <input type="hidden" ng-bind="incrementcounter()">
+                                                    <input type="hidden" ng-bind="evaluation_counter">
+                                                    <div ng-if="evaluation_counter <= 5" style="display: inline;">
+                                                        {% if we.hirer.get_photo_url%}
+                                                            <img class="box-icons" style="border: 1px solid black;" ng-src="{{we.hirer.get_photo_url}}" />
+                                                        {%else%}
+                                                            <img class="box-icons" style="border: 1px solid black;" ng-src="{%static 'images/silhouette.png'%}" />
+                                                        {%endif%}
+                                                    </div>
+
+                                                </div>
+                                                
+                                            {% endfor %}
+                                            
+                                            {% for key, value in evaluation_dict.items %}
+                                                <div id="check_evaluation" ng-if="w.first_name == '{{key}}'">
+                                                    {% if value > 5 %}
+                                                        <div id="check_evaluation">
+                                                            {% if not user.is_anonymous %}
+                                                            
+                                                            <a href="/usuario/profissional/{%verbatim%}{{w.id}}{%endverbatim%}/"> <img src="{% static 'images/plus.png' %}" class="box-icons" style="color: rgba(48,4,95,1); border: 1px solid rgba(48,4,95,1);"></a>
+                                                            
+                                                            {% else %}
+                                                                <a class="gohome" href="/try_login/"> <img src="{% static 'images/plus.png' %}" class="box-icons" style="color: rgba(48,4,95,1); border: 1px solid rgba(48,4,95,1);"></a>
+
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endif %} 
+                                                </div>
+                                            {% endfor%}
+                                            
+                                
+                                    
+                            <div class="row service-provided" ng-repeat="s in w.get_serviceprovided">
+                                        <div ng-if="$index < 3">
+                                            <div ng-if="s.service_type.service_category==category.id">
+                                                <div class="service-type">
+                                                    <span  ng-bind="s.service_type.description">Tipo</span>
+                                                </div>
+                                                <!--<img src="{% static 'images/layout/clock.png' %}"/>
+                                                <span ng-bind="s.duration">Duração</span>
+                                                <span> Minutos</span>-->
+                                                <p ng-if="s.fixed_price" ng-bind="'R$ '+s.price" class="price-tag">Preço</p>
+                                                <p ng-if="!s.fixed_price" ng-bind="'A partir R$ '+s.price" class="price-tag">Preço</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="my-container" ng-if="w.get_serviceprovided.length > 3">
+                                        <div id="to-expand{%verbatim%}{{w.id}}{%endverbatim%}" class="header">
+                                            <div class="content">
+                                                <div class="row service-provided" ng-repeat="s in w.get_serviceprovided">
+                                                    <div ng-if="$index >= 3" >
+                                                        <div ng-if="s.service_type.service_category==category.id">
+                                                            <div class="service-type">
+                                                                <span ng-bind="s.service_type.description">Tipo</span>
+                                                            </div>
+                                                            <!--<img src="{% static 'images/layout/clock.png' %}"/>
+                                                            <span ng-bind="s.duration">Duração</span>
+                                                            <span> Minutos</span>-->
+                                                            <p ng-if="s.fixed_price" ng-bind="'Valor fixo, R$ '+s.price" class="price-tag">Preço</p>
+                                                            <p ng-if="!s.fixed_price" ng-bind="'A partir R$ '+s.price" class="price-tag">Preço</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="more-service" class="my-container" ng-if="w.get_serviceprovided.length > 3">
+                                        <button id="{%verbatim%}{{w.id}}{%endverbatim%}" onclick="myClick(this.id)" class="more-service-button">Mais Serviços</button>
+                                    </div>
+                                    
+                    
+                            
+                
+                   
+                    <!-- Modal -->
+                    <div id="rankModal_{%verbatim%}{{w.id}}{%endverbatim%}" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Avaliando o Trabalhador {%verbatim%}{{w.first_name}}{%endverbatim%}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Pontualidade</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row lead">
+                                                    <div id="stars-punctuality_{%verbatim%}{{w.id}}{%endverbatim%}" class="starrr"></div>
+                                                    Você avaliou este item com <span id="count-stars-punctuality_{%verbatim%}{{w.id}}{%endverbatim%}">0</span> estrela(s)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Qualidade</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-hability_{%verbatim%}{{w.id}}{%endverbatim%}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-hability_{%verbatim%}{{w.id}}{%endverbatim%}">0</span> estrela(s)
+
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Confiança</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-trust_{%verbatim%}{{w.id}}{%endverbatim%}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-trust_{%verbatim%}{{w.id}}{%endverbatim%}">0</span> estrela(s)
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Preço</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-cost_benefit_{%verbatim%}{{w.id}}{%endverbatim%}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-cost_benefit_{%verbatim%}{{w.id}}{%endverbatim%}">0</span> estrela(s)
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <strong>Marque a caixa se recomenda esse profissional</strong>
+                                                <input id="endorsement_{%verbatim%}{{w.id}}{%endverbatim%}" type="checkbox" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <strong>Comentários</strong>
+                                                <textarea id="comments_{%verbatim%}{{w.id}}{%endverbatim%}" ng-model="w.comments"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-default" 
+                                        ng-disabled="!w.comments"
+                                        id="btn_send_rank_{%verbatim%}{{w.id}}{%endverbatim%}">Enviar</button>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-default" 
+                                        data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div><!-- Modal Content-->
+                        </div><!-- Modal dialog-->
+                    </div><!-- Modal -->
+                </div><!-- row -->
+            </div><!-- professional-box -->
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block jsBlock %}
+
+<!-- AngularJS -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/i18n/angular-locale_pt-br.js"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/indico.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/directives/onfinishrender.directive.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/hirer.module.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/worker/worker.module.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/services/hirer.service.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/controllers/hirer.controller.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/starrr_indico.js' %}"></script>
+<script type="text/javascript">
+
+function myClick(id){
+    console.log("Show me id: " + '#to-expand' + id);
+    $header = angular.element( document.querySelector( "#to-expand" + id ) );
+    
+    //getting the next element
+    $content = angular.element($header.context.firstElementChild);
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(300, function () {
+        //execute this after slideToggle is done
+        //change text of header based on visibility of content div
+        console.log("Sliding");
+    });
+
+};
+
+
+$("body").click
+          (
+            function(e)
+            {
+                if (e.target.id == "order-open") {
+                    el = document.getElementById("overlay-order");
+                    icn = document.getElementById("order-open");
+                    icn2 = document.getElementById("order-close");
+                    icn2.style.display = "inline";
+                    icn.style.display = "none";
+                    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+                    var mouseX = e.pageX;
+                    var mouseY = e.pageY;
+
+                    mouseY = mouseY + 25;
+                    mouseX = mouseX - 108;
+                    el.style.top = mouseY + "px";
+                    if (mouseX < 0) 
+                        el.style.left = "0px";
+                    else
+                        el.style.left = mouseX + "px";
+                }else if( e.target.id == "order-close" ){
+                    icn = document.getElementById("order-open");
+                    icn2 = document.getElementById("order-close");
+                    icn.style.display = "inline";
+                    icn2.style.display = "none";
+                    el = document.getElementById("overlay-order");
+                    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+                    var mouseX = e.pageX;
+                    var mouseY = e.pageY;
+
+                    mouseY = mouseY + 25;
+                    mouseX = mouseX - 108;
+                    el.style.top = mouseY + "px";
+                    if (mouseX < 0) 
+                        el.style.left = "0px";
+                    else
+                        el.style.left = mouseX + "px";
+                }else if(e.target.id == "dif-open"){
+                    el = document.getElementById("overlay-dif");
+                    icn = document.getElementById("dif-open");
+                    icn2 = document.getElementById("dif-close");
+                    icn2.style.display = "inline";
+                    icn.style.display = "none";
+                    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+                    var mouseX = e.pageX;
+                    var mouseY = e.pageY;
+
+                    mouseY = mouseY + 25;
+                    mouseX = mouseX - 108;
+                    el.style.top = mouseY + "px";
+                    if (mouseX < 0) 
+                        el.style.left = "0px";
+                    else
+                        el.style.left = mouseX + "px";
+                }else if(e.target.id == "dif-close"){
+                    el = document.getElementById("overlay-dif");
+                    icn = document.getElementById("dif-open");
+                    icn2 = document.getElementById("dif-close");
+                    icn.style.display = "inline";
+                    icn2.style.display = "none";
+                    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+                    var mouseX = e.pageX;
+                    var mouseY = e.pageY;
+
+                    mouseY = mouseY + 25;
+                    mouseX = mouseX - 108;
+                    el.style.top = mouseY + "px";
+                    if (mouseX < 0) 
+                        el.style.left = "0px";
+                    else
+                        el.style.left = mouseX + "px";
+                }else if(e.target.id == "neigh-open"){
+                    el = document.getElementById("overlay-neigh");
+                    icn = document.getElementById("neigh-open");
+                    icn2 = document.getElementById("neigh-close");
+                    icn2.style.display = "inline";
+                    icn.style.display = "none";
+                    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+                    var mouseX = e.pageX;
+                    var mouseY = e.pageY;
+
+                    mouseY = mouseY + 25;
+                    mouseX = mouseX - 108;
+                    el.style.top = mouseY + "px";
+                    if (mouseX < 0) 
+                        el.style.left = "0px";
+                    else
+                        el.style.left = mouseX + "px";
+                }else if(e.target.id == "neigh-close"){
+                    el = document.getElementById("overlay-neigh");
+                    icn = document.getElementById("neigh-open");
+                    icn2 = document.getElementById("neigh-close");
+                    icn.style.display = "inline";
+                    icn2.style.display = "none";
+                    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+					var mouseX = e.pageX;
+                    var mouseY = e.pageY;
+
+                    mouseY = mouseY + 25;
+                    mouseX = mouseX - 108;
+                    el.style.top = mouseY + "px";
+					el.style.left = mouseX + "px";
+                }
+            }
+            );
+
+
+
+
+$('input[type="checkbox"]').on('change', function() {
+   $(this).siblings('input[type="checkbox"]').not(this).prop('checked', false);
+});
+</script>
+
+{% endblock %}

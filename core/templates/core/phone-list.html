@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+{% block title %}Indikko - Endereços{% endblock %}
+
+{% block content %}
+
+<section id="servicerequest" class="no-margin">
+  <div class="container">
+    <div class="row">
+      <h3>Telefones</h3>
+
+			{% if phones%}
+			 {% for phone in phones %}
+       <div class="places-wrap col-sm-8">
+         <div class="row">
+           <div class="col-sm-10">
+             <h2>{{ phone.number }}</h2>
+           </div>
+           <div class="col-sm-2" style="padding-top: 58px;">
+             <a href="{%url 'core:phone-edit' phone.id %}"><i class="fa fa-pencil-square-o fa-2x"></i>&nbsp;&nbsp;</a>
+             <a href="{%url 'core:phone-delete' phone.id %}"><i class="fa fa-trash-o fa-2x"></i></a>
+           </div>
+         </div>
+       </div>
+			 {% endfor %}
+			{% else %}
+        <h3>Você não possui números de telefone.</h3>
+			{% endif %}
+
+    </div>
+    <div class="row">
+      <a class="btn-add-local" href="{%url 'core:phone-create' %}">ADICIONAR NOVO NÚMERO</a>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

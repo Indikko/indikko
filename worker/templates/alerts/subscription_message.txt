@@ -1,0 +1,10 @@
+Olá {{user.get_full_name}},
+
+Para darmos continuidade ao seu processo de inscrição precisamos que você seja
+recomendado por pessoas com as quais já trabalhou. Para isso envie o link abaixo
+para as pessoas que recomendam o seu trabalho por email ou whatsapp:
+
+{{evaluation_link}}
+
+Atenciosamente,
+Atendimento Indico

@@ -1,0 +1,8 @@
+Olá {{user.get_full_name}},
+
+Houve uma mudança no estado do serviço número {{ service.id }} para o estado de {{ service.get_status_display }}
+
+Verifique a alteração em http://www.indikko.com
+
+Atenciosamente,
+Atendimento Indico

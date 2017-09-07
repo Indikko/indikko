@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+{% block title %}Indikko - Endereços{% endblock %}
+
+{% block content %}
+
+<section id="servicerequest" class="no-margin">
+  <div class="container">
+    <div class="row">
+      <h3>ENDEREÇOS</h3>
+
+			{% if places%}
+			 {% for place in places %}
+       <div class="places-wrap col-sm-8">
+         <div class="row">
+           <div class="col-sm-10">
+             <h2>{{ place.label }}</h2>
+             <h3>{{ place.full_address }}</h3>
+           </div>
+           <div class="col-sm-2" style="padding-top: 58px;">
+             <a href="{%url 'core:place-edit' place.id %}"><i class="fa fa-pencil-square-o fa-2x"></i>&nbsp;&nbsp;</a>
+             <a href="{%url 'core:place-delete' place.id %}"><i class="fa fa-trash-o fa-2x"></i></a>
+           </div>
+         </div>
+       </div>
+			 {% endfor %}
+			{% else %}
+        <h3>Nenhum endereço encontrado!</h3>
+			{% endif %}
+
+    </div>
+    <div class="row">
+      <a class="btn-add-local" href="{%url 'core:place-create' %}">ADICIONAR NOVO ENDEREÇO</a>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

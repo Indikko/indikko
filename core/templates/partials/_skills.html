@@ -1,0 +1,26 @@
+{% if skills%}
+<div>
+{% for skill in skills %}
+
+<label class="checkbox-inline">
+  <input type="checkbox" id='{{skill.id}}' value="{{skill.id}}" name="skills"> {{skill.description}}
+</label>
+
+{% endfor %}
+{% for s in user_skills%}
+<label class="checkbox-inline">
+  <input type="checkbox" id='{{s.id}}' value="{{s.id}}" name="skills" checked> {{s.description}}
+</label>
+{% endfor %}
+</div>
+<p>
+  <label for="skills" class="error text-danger" id="skills-error">Você deve selecionar pelo menos um diferencial para continuar.</label>
+</p>
+{% else %}
+  <p class="text-info">Não existe nenhum diferencial definido para profissão selecionada.</p>
+  {% for s in user_skills%}
+	<label class="checkbox-inline">
+	  <input type="checkbox" id='{{s.id}}' value="{{s.id}}" name="skills" checked> {{s.description}}
+	</label>
+  {% endfor %}
+{% endif %}

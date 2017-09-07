@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Indikko{% endblock %}
+{% block content %}
+{% load i18n %}
+
+<section id="passwordreset">
+<div class="row row-centered">
+  <div class="col-md-6  col-centered">
+          <h1 style="padding-bottom: 50px;padding-top: 130px;text-align:center;">Renovar senha</h1>
+          {{ form.non_field_errors }}
+          <form method="post" action="{{ url }}">
+              {% csrf_token %}
+              <div class="form-group input-group-lg">
+                  {{ form.username_or_email.errors }}
+                  <input id="id_username_or_email" name="username_or_email" type="text" class="form-control"
+                  placeholder="Insira seu email aqui"/>
+              </div>
+
+              <input type="submit" value="Recuperar password" class="btn btn-primary btn-lg" style="width: 100%;">
+          </form>
+</div>
+</div>
+</section>
+
+{% endblock %}

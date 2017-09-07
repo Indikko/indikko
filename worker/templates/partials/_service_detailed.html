@@ -1,0 +1,38 @@
+{% block details%}
+{% csrf_token %}
+{% load worker_filters %}
+<div class="request-detail">
+    <form method="post" class="form-indico" id="service-form" action="set_service_status/">{% csrf_token %}
+    <div>
+        {% for erro in form.erros %}
+        {{ erro }}
+        {% endfor %}
+    </div>
+    <div class="request-detail">
+        <input type="hidden" name="id" value="{{service.id}}">
+    </div>
+    <div id="form-macabro">
+        {{ form }}
+    </div>
+    <div class="row">
+        {% if service.status == 0 %}
+        <input class="btn btn-radius btn-recusar" type="submit" value="REJEITAR" name="_reject">
+        <input class="btn btn-radius pull-right" type="submit" value="ACEITAR" name="_accept">
+        
+        {% endif %}
+        {% if service.status == 1 %}
+        <input class="btn btn-radius btn-recusar" type="submit" value="CANCELAR" name="_cancel">
+        <input class="btn btn-radius pull-right" type="submit" value="INICIAR TRABALHO" name="_start">
+        <br />
+        <br />
+        {% endif %}
+        {% if service.status == 5 %}
+        <input class="btn btn-radius btn-recusar" type="submit" value="CANCELAR" name="_cancel">
+        <input class="btn btn-radius pull-right" type="submit" value="CONCLUIR TRABALHO" name="_done">
+        <br />
+        <br />
+        {% endif %}
+    </div>
+</form>
+</div>
+{% endblock %}

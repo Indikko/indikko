@@ -1,0 +1,161 @@
+{% extends "core/base.html" %}
+{% load staticfiles %}
+{% block title %}Indikko - Pesquisa de profissionais{% endblock %}
+
+
+
+{% block content %}
+<style type="text/css">
+    #wrapper{
+        margin: 0px;
+    }
+    .container{
+        width: 100%;
+    }
+
+    .sec-intro{
+      height: 380px;
+    }
+
+    @media screen and (max-width: 768px) and (min-width: 420px){
+      .sec-intro{
+        height: 440px;
+      }
+    }
+
+    .background-intro{
+      background-size: 590px 100%;
+    }
+
+    .sec-professional{
+      height: 270px;
+      line-height: 26px;
+    }
+
+    .search-bar{
+      width: 50%;
+      margin-left: 21.495%;
+    }
+
+
+</style>
+<div class="container">
+  <div class="background-intro">
+    <section id="intro" class="sec-intro">
+      <div class="landing-header">
+          <!--##################################POPUP Login######################################## -->
+          
+          <!--##################################POPUP Login - END######################################## -->
+          <p style="text-align: center;">
+            <strong>Encontre aqui a melhor indicação para</strong></p>
+            <p style="text-align: center;">aquele serviço que você tanto precisa.</p>
+            <p style="text-align: center;"> Agende-se!
+            </p>
+            <div class="search-region">
+              <div class="row">
+
+                <input class="search-bar" id="search-text" type="text" maxlength="31" name="search-bar"  placeholder="Busque seu profissional...">
+
+                <a id="search-link" href="#"><img class="search-button" src="{% static 'images/magn.png'%}" border="0" alt="Submit" /></a>
+              </div>
+            </div>
+            <script type="text/javascript">
+              var categoriesID = [];
+
+                      $(function() {
+                        
+                        var availableCategories = [
+                          {% for c in all_categories%}
+                            '{{c.description}}',
+                          {% endfor%}
+                        ];
+                        {% for c in all_categories%}
+                          categoriesID.push({key: "{{c.description}}", value: "{{c.id}}"});
+                        {% endfor%}
+                        $("#search-text").autocomplete({
+                          source: availableCategories
+
+                        });
+                      });
+
+                      $("#search-text").autocomplete({
+                          select: function (a, b) {
+                              for (var i = 0; i < categoriesID.length; i++) {
+                                if (categoriesID[i].key == b.item.value) {
+                                  console.log(categoriesID[i].value);
+                                  
+                                  document.getElementById("search-link").href="/usuario/profissionais/" + categoriesID[i].value + "/"; 
+                                }
+                              }
+                          }
+                      });
+            </script>
+          </div>  
+        </div>
+      </section>
+      <section id="sec-professional" class="sec-professional">
+      <div class="professional">
+        <h1>Seja um <strong>Profissional!</strong></h1>  
+        <p>Nossa lista de profissionais funciona com indicações boca a boca de modo virtual, com base</p><p><strong>
+        nas avaliações que seus clientes passam e o indicam para todos seus amigos do Facebook.</strong></p>
+      </div>
+    </section>
+    <section id="sec-our-services" class="sec-our-services">
+       <div class="background-our-service">
+        <div class="our-services"><p>Encontre prestadores de serviços</p><p><strong>avaliados por seus amigos...</strong></p>
+          <div class="row">
+            {% for group, categories in groups.items %}
+                {% for c in categories %}
+                    {% if forloop.counter|divisibleby:3 %}
+                    </div>
+                    <div class="row">
+                    {% endif %}
+                    <div class="col-sm-6" name="{{c.description}}">
+                      <a href="{% url 'core:professionals' c.id %}">
+                        {% if c.image %}
+                        <img style="width: 300px ;margin: 0px auto;" class="image-service" src="{{ c.image.url }}" />
+                        {% else %}
+                        <img style="width: 300px ;margin: 0px auto;" class="image-service" src="{% static 'images/category-placeholder.png'%}" />
+                        {% endif %}
+                      </a>
+                      <p><strong>{{c.description}}</strong></p>
+                    </div>
+                    {% if forloop.counter|divisibleby:4 %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="sec-last" class="sec-last">
+
+        <div class="col-sm-9">
+          <div class="row">
+            <a href="#" class="featured-text links"><strong>Seja um profissional</strong></a>
+          </div>
+          <div class="row">
+            <a href="#" class="links">Quem somos</a>
+          </div>
+          <div class="row">
+            <a href="#" class="links">Nossos profissionais</a>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="row featured-text"><strong>SIGA-NOS!</strong></div>
+          <div class="row">
+            <a  href="https://www.instagram.com/indikko/"><img src="{% static 'images/icon-instagram.png'%}"></a>
+            <a  href="https://www.facebook.com/Indikko/"><img src="{% static 'images/icon-facebook.png'%}"></a>
+            <a href="mailto:suporte@indikko.com"><img src="{% static 'images/icon-email.png'%}"></a>
+          </div>
+        </section>
+</div>
+	{% if groups %}
+        
+    {% else %}
+        <img src="{% static 'images/congratulations.JPG' %}" />
+    {% endif %}
+
+{% endblock %}
+

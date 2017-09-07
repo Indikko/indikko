@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}User Registration{% endblock %}
+{% block head %}User Registration{% endblock %}
+{% block content %}
+{% load app_extras %}
+
+<section id="signup">
+  <div class="container">
+    <div class='row row-centered'>
+      <div class="col-sm-4 col-centered">
+        <form method="post" action=".">{% csrf_token %}
+          <div class="form-field">
+            <a class="btn btn-block btn-social btn-facebook btn-lg" href="{% url 'social:begin' 'facebook' %}?next={%url 'indico:profile-choice' %}">
+              <span class="fa fa-facebook"></span>Entrar com Facebook
+            </a>
+          </div>
+          <div class="hr">
+            <div class="inner">
+              Ou
+            </div>
+          </div>
+
+            {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+            <div class="alert alert-error">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+            <div class="alert alert-error">
+                <strong>{{ error|escape }}</strong>
+            </div>
+
+            {% endfor %}
+            {% endif %}
+
+          <div class="form-field left-inner-addon ">
+              <i class="glyphicon glyphicon-user"></i>
+              {{ form.first_name |placeholder:'Nome'}}
+          </div>
+          <div class="form-field left-inner-addon ">
+              <i class="glyphicon glyphicon-user"></i>
+              {{ form.last_name |placeholder:'Sobrenome'}}
+          </div>
+          <div class="form-field left-inner-addon ">
+              <i class="glyphicon glyphicon-envelope"></i>
+              {{ form.email |placeholder:'Email'}}
+          </div>
+          <div class="form-field left-inner-addon ">
+              <i class="glyphicon glyphicon-lock"></i>
+              {{ form.password1 |placeholder:'Senha'}}
+          </div>
+          <div class="form-field left-inner-addon ">
+              <i class="glyphicon glyphicon-lock"></i>
+              {{ form.password2 |placeholder:'Confirme a senha'}}
+          </div>
+
+          <div class="form-field center">
+            <input type="submit" value="Criar conta" class="btn btn-radius btn-lg"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include 'rdIntegrationJS.html' %}
+{% endblock %}

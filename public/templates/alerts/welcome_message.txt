@@ -1,0 +1,12 @@
+Olá {{user.get_full_name}},
+
+Obrigado por se registrar no Indikko. Sua conta agora está ativada.
+
+Para acessar sua conta, use o email e o password que você definiu durante
+o processo de cadastro, caso tenha utilizando o facebook, basta se autenticar
+por ele.
+
+http://www.indikko.com
+
+Atenciosamente,
+Atendimento Indikko

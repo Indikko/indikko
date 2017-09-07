@@ -1,0 +1,65 @@
+{% extends "base_client.html" %}
+{% block title %}Indikko - Pesquisa de profissionais{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+
+<div class="container">
+    <h1 class="subtitle">Profissionais disponíveis (30)</h1>
+    <div class="col-sm-12 line-div"></div>
+    <div class="profissionals-galery">
+        
+        <div id="profissional1" class="col-sm-4">
+            <div class="profissional">
+                <div class="profissional-block">
+                    <div class="profissional-avatar">
+                        <img src="{% static 'images/diarista.png'%}" />
+                    </div>
+                    <div>
+                        <h2>Soraia da Silva</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis p</p>
+                    </div>
+                    <div class="rating">
+                        <img src="{% static 'images/icon-rating.png'%}"/><br />
+                        <strong>5.0</strong>
+                    </div>
+                </div>
+                <div class="profissional-block">
+                    <div class="indicacoes">
+                        <img src="{% static 'images/icon-indicacoes.png'%}" />
+                        <strong>34556646</strong>
+                    </div>
+                    <div class="common">
+                        <strong>3 amigos</strong><br />
+                        <strong>3 VIP</strong>
+                    </div>
+                    <div class="common-social">
+                        <img src="{% static 'images/common-profile.png'%}" />
+                        <img src="{% static 'images/common-profile.png'%}" />
+                        <img src="{% static 'images/common-profile.png'%}" />
+                        <img src="{% static 'images/common-profile.png'%}" />
+                    </div>
+                </div>
+                <div class="profissional-block">
+                    <div class="skills">
+                        <span>
+                        <img src="{% static 'images/icon_skills.png'%}" />HABILIDADES FORTES
+                        </span>
+                        <div>
+                            <img src="{% static 'images/icon_passar.png'%}" />Passar
+                            <img src="{% static 'images/icon_passar.png'%}" />Passar
+                            <img src="{% static 'images/icon_passar.png'%}" />Passar
+                        </div>
+                    </div>
+                    <a class="btn btn-agendar">
+                        <img src="{% static 'images/btn_icon_agendar.png'%}"/><br />
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+

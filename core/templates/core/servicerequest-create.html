@@ -1,0 +1,122 @@
+{% extends "core/base.html" %}
+{% block title %}Indikko - Agendamento{% endblock %}
+{% block content %}
+{% load staticfiles %}
+{% load app_extras %}
+
+{% load l10n %}
+
+<link href="{% static 'css/bootstrap-datepicker.min.css'%}" rel="stylesheet">
+<link href="{% static 'css/bootstrap-timepicker.min.css'%}" rel="stylesheet"/>
+<section id="servicerequest" class="no-margin">
+  <div class="container">
+    <h1 class="subtitle">AGENDAMENTO</h1>
+    <div class="col-sm-12 line-div"></div>
+    <div class="row">
+      <form method="post" >
+        <input id="id_owner" name="owner" value="{{form.owner.value}}" type="hidden">
+        <input id="id_professional" name="professional" value="{{form.professional.value}}" type="hidden">
+        <input id="id_category" name="category" value="{{form.category.value}}" type="hidden">
+        <input id="id_service_provided" name="service_provided" value="{{form.service_provided.value}}" type="hidden">
+        <input id="id_price" name="price"
+            {% localize off %}
+          value="{{form.price.value}}" {% endlocalize %} type="hidden">
+      <div class="col-md-2">
+        <p>
+          <img src="{% if p.photo %}{{p.photo.url}}{% else %}https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png{% endif %}" class="img-responsive"/>
+        </p>
+      </div>
+      <div class="col-md-4">
+        <H1>{{p.get_full_name}}</h1>
+        <p>Valor do Serviço<br/>
+        <span style="font-size: 1.5em;">R$ {{sp.price}}</span></p>
+      </div>
+      <div class="col-md-6">
+
+
+
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <div class="form-group">
+            {{ form.date.errors }}
+            <label for="{{ form.date.id_for_label }}">Data</label>
+            <div class="input-group date">
+              <!--input type="text" name="date"-->{{ form.date }}<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            </div>
+          </div>
+          <div class="form-group">
+            {{ form.time.errors }}
+            <label for="{{ form.time.id_for_label }}">Hora</label>
+
+            <div class="input-group bootstrap-timepicker timepicker">
+              <input id="id_time" type="text" name="time" class="form-control">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+            </div>
+
+          </div>
+          <div class="form-group">
+            {% if worker.attendance_in_domicile %}
+            <input type="checkbox" id="costumer_service"> Desejo atendimento em domicílio.
+            <div id="address_section">
+              <label for="{{ form.address.id_for_label }}">Endereço*</label>
+              {{ form.address }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            {{ form.phone_number.errors }}
+            <label for="{{ form.phone_number.id_for_label }}">Informe seu telefone</label>
+            {{ form.phone_number }}
+          </div>
+
+          <div class="form-group">
+            {{ form.more_info.errors }}
+            <label for="{{ form.more_info.id_for_label }}"></label>
+            {{ form.more_info }}
+          </div>
+          <div class="form-group" >
+            <!--{{ form.payment_preference.errors }}-->
+            <label for="{{ form.payment_preference.id_for_label }} " style="visibility: hidden;" value:"Dinheiro">Forma de pagamento</label>
+            {{ form.payment_preference | attr:"style=visibility: hidden;" }}
+          </div>
+          <div class="form-field">
+            <input type="submit" value="Solicitar" class="btn btn-radius pull-right"/>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}
+
+{% block jsBlock %}
+<script src="{% static 'js/bootstrap-datepicker.min.js'%}"></script>
+<script src="{% static 'locales/bootstrap-datepicker.pt-BR.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+<script>
+
+  $('#id_date').datepicker({
+    format: "dd/mm/yyyy",
+    startDate: "today",
+    todayBtn: "linked",
+    language: "pt-BR",
+    autoclose: true,
+
+  });
+  $('#address_section').hide();
+  $('#costumer_service').change(function () {
+    if ($(this).is(':checked')) {
+      $('#address_section').show();
+    }else{
+      $('#address_section').hide();
+    }
+  });
+
+  $('#id_time').timepicker({
+    showMeridian : false,
+    maxHours : 24,
+  });
+</script>
+{% endblock %}

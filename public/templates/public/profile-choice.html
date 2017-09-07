@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}User Registration{% endblock %}
+{% block head %}User Registration{% endblock %}
+{% block content %}
+{% load app_extras %}
+
+<section id="wrapper">
+  <div class="container">
+    <div class='row row-centered'>
+      <div class="col-sm-4 col-centered">
+
+        <form method="post" action=".">{% csrf_token %}
+          <div class="form-field center" style="padding-bottom:0;">
+            <h2>Selecione o tipo de conta</h2>
+
+            <label for="id_account_type_0"><input class="radio-inline" id="id_account_type_0" name="account_type" value="1" type="radio"> Contratar</label>
+
+            <label for="id_account_type_1"><input class="radio-inline" id="id_account_type_1" name="account_type" value="2" type="radio" checked="checked"> Trabalhar</label>
+
+          </div>
+          <div class="form-field center">
+            <input type="submit" value="Confirmar" class="btn btn-login btn-lg"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

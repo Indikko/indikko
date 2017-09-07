@@ -1,0 +1,79 @@
+
+<section id="evaluate_worker" class="no-margin">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6" style="float: none; margin: 0 auto;">
+        <div class="row recommend-header">
+            <div class="col-sm-2 ">
+              <img src="{% if worker.photo %}{{worker.photo.url}}{% else %}https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png{% endif %}" class="img-responsive"/>
+            </div>
+            <div class="col-sm-10">
+              <h2>{{worker.get_full_name}}</h2>
+            </div>
+        </div>
+
+        <div class="row">
+          <form method="post" action="{% url 'hirer:finish-service' service.id %}">{% csrf_token %}
+            <div class="form-group">
+              <label class="col-sm-7 control-label">Pontualidade</label>
+              {% for choice in form.punctuality.field.choices %}
+              <label class="radio-inline">
+                <input name='{{ form.punctuality.name }}'
+                   id='{{ form.punctuality.auto_id }}_{{ forloop.counter0 }}' type='radio' value='{{ choice.0 }}'
+                   {% ifequal form.punctuality.value choice.0 %} checked='checked'{% endifequal %}/> {{ choice.1 }}
+              </label>
+              {% endfor %}
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-7 control-label">Habilidade</label>
+              {% for choice in form.quality.field.choices %}
+              <label class="radio-inline">
+                <input name='{{ form.quality.name }}'
+                   id='{{ form.quality.auto_id }}_{{ forloop.counter0 }}' type='radio' value='{{ choice.0 }}'
+                   {% ifequal form.quality.value choice.0 %} checked='checked'{% endifequal %}/> {{ choice.1 }}
+               </label>
+              {% endfor %}
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-7 control-label">Confiança</label>
+              {% for choice in form.trust.field.choices %}
+              <label class="radio-inline">
+                <input name='{{ form.trust.name }}'
+                   id='{{ form.trust.auto_id }}_{{ forloop.counter0 }}' type='radio' value='{{ choice.0 }}'
+                   {% ifequal form.trust.value choice.0 %} checked='checked'{% endifequal %}/> {{ choice.1 }}
+               </label>
+              {% endfor %}
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-7 control-label">Cordialidade</label>
+              {% for choice in form.cost_benefit.field.choices %}
+              <label class="radio-inline">
+                <input name='{{ form.cost_benefit.name }}'
+                   id='{{ form.cost_benefit.auto_id }}_{{ forloop.counter0 }}' type='radio' value='{{ choice.0 }}'
+                   {% ifequal form.cost_benefit.value choice.0 %} checked='checked'{% endifequal %}/> {{ choice.1 }}
+               </label>
+              {% endfor %}
+            </div>
+            <div class="form-group">
+              <label class="col-sm-7 control-label">Marque a caixa se recomenda esse profissional?</label>
+              {{ form.recommend }}
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label" for="{{ form.testimonial.id_for_label }}">Comentário</label>
+              {{ form.testimonial }}
+            </div>
+            <div class="form-group">
+              <p>
+                <input class="btn btn-radius" type="submit" value="Enviar">
+                <a class="btn btn-default" href="{% url 'hirer:home' %}">Cancelar</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

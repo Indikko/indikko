@@ -1,0 +1,10 @@
+{% if notifications %}
+  {% for n in notifications %}
+<li>
+    <a href="#">{{n.message}}</a>
+</li>
+
+{% endfor %}
+{%else%}
+Você não possui novas notificações. :)
+{% endif %}

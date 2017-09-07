@@ -1,0 +1,82 @@
+{% block details%}
+<h1 class="subtitle">SOLICITAÇÕES DE SERVIÇO</h1>
+<div class="col-sm-12 line-div"></div>
+<div class="menu-request">
+    <a class="col-sm-4 btn-request-toggle" href="#" data-element="#requests-open">NOVOS</a>
+    <a class="col-sm-4 btn-request-toggle" href="#" data-element="#requests-pending">AGENDADO</a>
+    <a class="col-sm-4 btn-request-toggle" href="#" data-element="#requests-closed">CONCLUÍDO</a>
+</div>
+<div class="requests">
+    <table id="requests-open" class="table">
+        <caption id="requests-open-total">{{ open_services|length }} solicitações</caption>
+        {% for service in open_services %}
+        <tbody value="{{ service.id }}" status="{{ service.status }}">
+        <tr class="request-cod">
+            <th colspan="3">cód:{{service.id}}</th>
+        </tr>
+        <tr class="header">
+            <td>PROFISSIONAL</td> <td>DATA DO SERVIÇO</td> <td>STATUS</td>
+        </tr>
+        <tr class="owner">
+            <td>{{service.service_provided.worker.first_name}}&nbsp;{{service.service_provided.worker.last_name}}</td> <td>{{service.date}}</td> <td>{{service.get_status_display}}</td>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <table id="requests-pending" class="table">
+        <caption id="requests-pending-total">{{ pending_services|length }} solicitações</caption>
+        {% for service in pending_services %}
+        <tbody value="{{ service.id }}" status="{{ service.status }}">
+        <tr class="request-cod">
+            <th colspan="3">cód:{{service.id}}</th>
+        </tr>
+        <tr class="header">
+            <td>PROFISSIONAL</td> <td>DATA DO SERVIÇO</td> <td>STATUS</td>
+        </tr>
+        <tr class="owner">
+            <td>{{service.service_provided.worker.first_name}}&nbsp;{{service.service_provided.worker.last_name}}</td> <td>{{service.date}}</td> <td>{{service.get_status_display}}</td>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <table id="requests-closed" class="table">
+        <caption id="requests-closed-total">{{ closed_services|length }} solicitações</caption>
+        {% for service in closed_services %}
+        <tbody value="{{ service.id }}" status="{{ service.status }}">
+        <tr class="request-cod">
+            <th colspan="3">cód:{{service.id}}</th>
+        </tr>
+        <tr class="header">
+            <td>PROFISSIONAL</td> <td>DATA DO SERVIÇO</td> <td>STATUS</td>
+        </tr>
+        <tr class="owner">
+            <td>{{service.service_provided.worker.first_name}}&nbsp;{{service.service_provided.worker.last_name}}</td> <td>{{service.date}}</td> <td>{{service.get_status_display}}</td>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+
+{% load staticfiles %}
+<script src="{% static 'js/toggle-requests.js'%}"></script>
+<script>
+    var item;
+    $(document).ready(function() {
+        $("div.requests > table > tbody").click(function() {
+            var service_id = $(this).attr('value');
+            var status = $(this).attr('status');
+            console.log('service id: ' + service_id);
+            console.log('status: ' + status);
+            if (status == 6) {
+                var url = '/hirer/service/end/'+service_id+'/';
+                $.get(url,{id:service_id}, function(data){
+                        $("#service-detail").html(data);
+                    }
+                );
+            } else {
+                $("#service-detail").html("");
+            }
+        });
+    });
+</script>
+{% endblock %}

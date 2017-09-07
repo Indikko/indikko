@@ -1,0 +1,52 @@
+{% extends "core/base.html" %}
+{% block title %}Login{% endblock %}
+{% block head %}Login{% endblock %}
+{% block content %}
+
+{% load app_extras %}
+<section id="login">
+  <div class="container">
+    <div class='row row-centered'>
+      <div class="col-sm-4 col-centered">
+        {% if form.errors %}
+            <p class="text-danger">Nome de usuario ou senha incorretos. Por favor, tente novamente!</p>
+        {% endif %}
+
+        <form method="post" action=".">{% csrf_token %}
+          <div class="form-field">
+            <a class="btn btn-block btn-social btn-facebook btn-lg" href="{% url 'social:begin' 'facebook' %}?next={%url 'indico:select-profile' %}">
+              <span class="fa fa-facebook"></span> Entrar com Facebook
+            </a>
+          </div>
+          <div class="hr">
+            <div class="inner">
+              Ou
+            </div>
+          </div>
+          <div class="form-field left-inner-addon ">
+              <i class="glyphicon glyphicon-user"></i>
+              {{ form.username |placeholder:'Email de usuario'}}
+          </div>
+
+          <div class="form-field left-inner-addon ">
+              <i class="glyphicon glyphicon-lock"></i>
+              {{ form.password |placeholder:'Senha'}}
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Lembrar senha
+            </label>
+          </div>
+
+          <div class="form-field">
+            <input type="submit" value="Entrar" class="btn btn-login btn-lg"/> <a class="btn btn-forgotNew" href="{% url 'password_reset_recover' %}">ESQUECEU A SENHA?</a>
+          </div>
+          <input type="hidden" name="next" value="{%url 'indico:select-profile' %}" />
+        </form>
+      </div>
+
+      <div class="hr"></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

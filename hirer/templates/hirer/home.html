@@ -1,0 +1,43 @@
+{% extends "core/base.html" %}
+{% load staticfiles %}
+{% block title %}Indikko - Pesquisa de profissionais{% endblock %}
+
+{% block content %}
+
+    {% if groups %}
+        {% for group, categories in groups.items %}
+            <div class="text-left">
+                <h3>
+                    {% if group %}
+                        {{group.description}}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </h3>
+                <hr>
+            </div>
+
+            {% for c in categories %}
+                {% if forloop.counter0 == 0 or forloop.counter0|divisibleby:4 %}
+                <div class="row">
+                {% endif %}
+                <div class="col-md-3" style="text-align:center">
+                  <a href="{% url 'hirer:professionals' c.id %}">
+                    {% if c.image %}
+                    <img src="{{ c.image.url }}">
+                    {% else %}
+                    <img src="{% static 'images/category-placeholder.png'%}">
+                    {% endif %}
+                    <br>{{c.description}}
+                  </a>
+                </div>
+                {% if forloop.counter|divisibleby:4 %}
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <img src="{% static 'images/congratulations.JPG' %}" />
+    {% endif %}
+
+{% endblock %}

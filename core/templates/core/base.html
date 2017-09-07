@@ -1,0 +1,447 @@
+{% extends 'real_base.html' %}
+
+{% load staticfiles %}
+
+{% block allhead %}
+<title>Indikko</title>
+
+<!-- core CSS -->
+
+{% include 'stylesheets.html' %}
+
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+
+  {% endblock %}
+
+  {% block body %}
+  <style type="text/css">
+  #wrapper {
+    transition: margin-left .5s;
+    padding: 0px;
+    margin: 0px;
+  }
+  .navbar-inverse>.container{
+    width: auto;
+  }
+  .navbar-fixed-top>.container{
+    width: auto;
+  }
+  .navbar{
+    padding: 0px;
+  }
+  .indikko-navbar{
+    margin-bottom: 15px;
+    margin-top: 15px;
+    height: 60px;
+  }
+  #nav-lines, #nav-linesTop{
+    display: block;
+    float: left;
+    margin-left: 41px;
+    height: 50px;
+  }
+  
+  @keyframes showNav {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  #nav-cross, #nav-crossTop{
+  	display: none;
+    float: left;
+    margin-left: 30px;
+    height: 50px;
+    animation: showNav .5s ease-in-out both;  
+  }
+  
+
+  #header{
+    margin-bottom: 0px;
+  }
+  .indikko-navbar>.row{
+	  text-align:center;
+  }
+
+  .indikko-logo{
+    height: 50px;
+    left: 45%;
+    position: absolute;
+  }
+
+  .want-work{
+    font-family: robotoLight;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 28px;
+    position: absolute;
+    left: 68%;
+  }
+
+  .want-work strong{
+    color: #ff0049;
+    font-family: robotoRegular;
+    text-decoration: underline;
+  }
+
+  .want-work:hover{
+    color: #fff;
+    -webkit-transition: color 0ms, color 0ms;
+    transition: color 0ms, color 0ms;
+  }
+
+  .indikko-sin{
+      height: 50px;
+      position: absolute;
+      left: 94.578%;
+  }
+
+  @media screen and (max-width: 370px) and (min-width: 300px){
+    .want-work{
+      font-size: 8px;
+      left: 62.5%;
+      padding: 0px 4px;
+      top: 11px;
+    }
+    #nav-lines, #nav-cross, #nav-linesTop, #nav-crossTop{
+      height: 18px;
+      margin-left: 10px;
+    }
+
+    .indikko-logo{
+      height: 18px;
+      left: 40%;
+
+    }
+
+    .indikko-sin{
+      height: 18px;
+      left: 91.578%;
+    }
+
+    .indikko-navbar{
+      height: 18px;
+    }
+  }
+
+  /* Mobile Screen (01)*/
+  @media screen and (max-width: 548px) and (min-width: 370px){
+    #nav-lines, #nav-cross, #nav-linesTop, #nav-crossTop{
+	    height: 18px;
+      margin-left: 10px;
+    }
+
+    .want-work{
+      font-size: 10px;
+      left: 59.5%;
+      padding: 0px 5px;
+      top: 13px;
+    }
+
+    .indikko-logo{
+      height: 18px;
+      left: 40%;
+
+    }
+
+    .indikko-sin{
+      height: 18px;
+	    left: 91.578%;
+    }
+
+    .indikko-navbar{
+      height: 18px;
+    }
+  }
+
+
+  /* Tablet Screen (02) */
+  @media screen and (max-width: 1170px) and (min-width: 768px){
+    #nav-lines, #nav-cross, #nav-linesTop, #nav-crossTop{
+    height: 30px;
+      margin-left: 10px;
+    }
+
+    .want-work{
+      font-size: 18px;
+      left: 65%;
+      padding: 8px 10px;
+      top: 10px;
+    }
+
+    .indikko-logo{
+      height: 30px;
+      left: 40%;
+
+    }
+
+    .indikko-sin{
+      height: 30px;
+      left: 91.578%;
+    }
+
+    .indikko-navbar{
+      height: 30px;
+    }
+
+  }
+
+
+  @media screen and (max-width: 768px) and (min-width: 548px){
+    .indikko-logo{
+      left: 40%;
+      height: 30px;
+    }
+    .indikko-sin{
+      left: 91.578%;
+      height: 30px;
+    }
+
+    .want-work{
+      font-size: 12px;
+      left: 67%;
+      padding: 5px 5px;
+      top: 17px;
+    }
+
+    #nav-lines, #nav-cross, #nav-linesTop, #nav-crossTop{
+      margin-left: 10px;
+      width: 30px;
+      height: 30px;
+    }
+
+    .indikko-navbar{
+      height: 40px;
+    }
+  }
+
+  </style>
+  <div id="wrapper">
+    <header id="header">
+      <nav id="move-navbar" class="navbar navbar-default navbar-fixed-top" style="visibility: hidden;" role="banner">
+        <div class="container">
+          {% if not user.is_anonymous %}
+          <div id="mySidenav" class="sidenav">
+            <ul class="nav top-nav navbar-account">
+              <li class="dropdown">
+                <!--{% if user.is_worker %}
+                  <a href="{%url 'worker:home' %}"><i class="fa fa-fw fa-calendar fa-1-4x"></i> Minha Agenda</a>
+                {% else %}
+                  <a href="{%url 'core:schedule' %}"><i class="fa fa-fw fa-calendar fa-1-4x"></i> Minha Agenda</a>
+                {% endif %}-->
+                <a href="{%url 'core:settings' %}"><i class="fa fa-user fa-1-4x"></i> &nbsp;
+                {% if user and not user.is_anonymous %}
+                  {{ user.get_full_name|default:user.email }}
+                {% endif %}
+                <a href="{% url 'auth:logout' %}?next={% url 'indico:home' %}"><i class="fa fa-fw fa-power-off"></i> Sair</a>
+              </li>
+            </ul>
+          </div>
+          {% else %}
+          <div id="mySidenav" class="sidenav">
+            <ul class="nav top-nav navbar-account">
+              <li class="dropdown">
+                <a href="{% url 'auth:logout' %}?next={% url 'indico:home' %}"><i class="fa fa-fw fa-power-off"></i> Sair</a>
+              </li>
+            </ul>
+          </div>
+          {% endif %}
+          <div class="indikko-navbar">
+            <div class="row">
+                <img id="nav-lines" class="nav navbar-left top-nav " src="{%static 'images/layout/sidebar-line.png'%}" onclick="openNav()">
+                <img id="nav-cross" class="nav navbar-left top-nav " src="{%static 'images/layout/sidebar-cross.png'%}" onclick="closeNav()">
+                {% if not user.is_anonymous %}
+                <a   href="{% url 'core:home' %}" ><img class="indikko-logo" src="{% static 'images/logo.png'%}" /></a>
+                {% if not user.is_worker %}
+                  <a href="{%url 'worker:subscription' %}" class="want-work">Seja um <strong>Profissional</strong></a>
+                {% endif %}
+                <ul>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img class="indikko-sin" src="{% static 'images/layout/sino-w.png' %}">
+                  </a>
+                  <ul id="notifications" class="dropdown-menu alert-dropdown"></ul>
+                </ul>
+                {% else %}
+                <a  href="{% url 'core:home' %}" ><img class="indikko-logo" src="{% static 'images/logo.png'%}" /></a>
+                {% endif %}
+            </div>
+        </div>
+      </nav><!--/nav-->
+      <nav class="navbar navbar-inverse" role="banner">
+        <div class="container">
+          {% if not user.is_anonymous %}
+          <div id="mySidenavTop" class="sidenav">
+            <ul class="nav top-nav navbar-account">
+              <li class="dropdown">
+                <!--{% if user.is_worker %}
+                  <a href="{%url 'worker:home' %}"><i class="fa fa-fw fa-calendar fa-1-4x"></i> Minha Agenda</a>
+                {% else %}
+                  <a href="{%url 'core:schedule' %}"><i class="fa fa-fw fa-calendar fa-1-4x"></i> Minha Agenda</a>
+                {% endif %}-->
+                <a href="{%url 'core:settings' %}"><i class="fa fa-user fa-1-4x"></i> &nbsp;
+                {% if user and not user.is_anonymous %}
+                  {{ user.get_full_name|default:user.email }}
+                {% endif %}
+                <a href="{% url 'auth:logout' %}?next={% url 'indico:home' %}"><i class="fa fa-fw fa-power-off"></i> Sair</a>
+              </li>
+            </ul>
+          </div>
+          {% else %}
+          <div id="mySidenavTop" class="sidenav">
+            <ul class="nav top-nav navbar-account">
+              <li class="dropdown">
+                <a href="{% url 'auth:logout' %}?next={% url 'indico:home' %}"><i class="fa fa-fw fa-power-off"></i> Sair</a>
+              </li>
+            </ul>
+          </div>
+          {% endif %}
+          <div class="indikko-navbar">
+            <div class="row">
+                <img id="nav-linesTop" class="nav navbar-left top-nav " src="{%static 'images/layout/sidebar-line.png'%}" onclick="openNav()">
+                <img id="nav-crossTop" class="nav navbar-left top-nav " src="{%static 'images/layout/sidebar-cross.png'%}" onclick="closeNav()">
+                {% if not user.is_anonymous %}
+                <a   href="{% url 'core:home' %}" ><img class="indikko-logo" src="{% static 'images/logo.png'%}" /></a>
+                {% if not user.is_worker %}
+                  <a href="http://conteudo.indikko.com/pre-cadastro-profissional" class="want-work">Seja um <strong>Profissional</strong></a>
+                {% endif %}
+                <ul>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img class="indikko-sin" src="{% static 'images/layout/sino-w.png' %}">
+                  </a>
+                  <ul id="notifications" class="dropdown-menu alert-dropdown"></ul>
+                </ul>
+                {% else %}
+                <a  href="{% url 'core:home' %}" ><img class="indikko-logo" src="{% static 'images/logo.png'%}" /></a>
+                {% endif %}
+            </div>
+        </div>
+      </nav><!--/nav-->
+          </header><!--/header-->
+
+          <div class="container">
+            {% block content %}{% endblock %}
+          </div>
+          <div id="push"></div>
+        </div>
+
+        <script type="text/javascript">
+
+          function getNotifications(){
+            $.get('/usuario/alertas/', function (data){
+              $("#notifications").html (data);
+            });
+          }
+
+          $(document).ready(function(){
+           setInterval(function(){ getNotifications(); }, 2000);
+         });
+
+
+          function openNav() {
+            var navBar = document.getElementById('move-navbar');
+            if (navBar.style.visibility == "hidden") {
+              document.getElementById("mySidenavTop").style.width = "250px";
+              var img1 = document.getElementById('nav-linesTop');
+              var img2 = document.getElementById('nav-crossTop');
+              var content = document.getElementById('wrapper');
+
+        		  img1.style.display = "none";
+        		  img2.style.display = "block";
+              img2.style.left = "250px";
+              img2.style.position = "fixed";
+              if(screen.width < 768){
+          			var sin_icon = document.getElementsByClassName('indikko-sin');
+
+          			var work_icon = document.getElementsByClassName('want-work');
+                console.log(work_icon);
+                console.log(screen.width);
+                for (var i = 0 ; i < sin_icon.length; i++) {
+                  sin_icon.item(i).style.display = "none"; 
+                }
+                for (var i = 0; i < work_icon.length; i++ ) {
+                  work_icon.item(i).style.display = "none";  
+                }
+          			
+                
+              }
+            }else{
+              console.log("opem");
+              document.getElementById("mySidenav").style.width = "250px";
+              var img1 = document.getElementById('nav-lines');
+              var img2 = document.getElementById('nav-cross');
+              var content = document.getElementById('wrapper');
+
+              img1.style.display = "none";
+              img2.style.display = "block";
+              img2.style.left = "250px";
+              img2.style.position = "fixed";
+              if(screen.width < 768){
+                var sin_icon = document.getElementsByClassName('indikko-sin');
+
+                var work_icon = document.getElementsByClassName('want-work');
+                console.log(screen.width);
+                console.log(work_icon);
+
+                for (var i = 0 ; i < sin_icon.length; i++) {
+                  sin_icon.item(i).style.display = "none"; 
+                }
+                for (var i = 0; i < work_icon.length; i++ ) {
+                  work_icon.item(i).style.display = "none";  
+                }
+              }
+            }
+          }
+
+          /* Set the width of the side navigation to 0 */
+          function closeNav() {
+            var navBar = document.getElementById('move-navbar');
+            if(navBar.style.visibility == "hidden"){
+              document.getElementById("mySidenavTop").style.width = "0";
+              var img1 = document.getElementById('nav-linesTop');
+              var img2 = document.getElementById('nav-crossTop');
+              var content = document.getElementById('wrapper');
+              img1.style.display = "block";
+              img2.style.display = "none";
+              img2.style.left = "0px";
+
+                if(screen.width < 768){
+            			var icons = document.getElementsByClassName('indikko-sin');
+            			var work_icon = document.getElementsByClassName('want-work');
+                  console.log(work_icon);
+            			for (var i = 0 ; i < icons.length; i++) {
+                    icons.item(i).removeAttribute("style");
+                  }
+                  for (var i = 0; i < work_icon.length; i++ ) {
+                    work_icon.item(i).removeAttribute("style");
+                  }
+              }
+            }else{
+              console.log("close");
+              document.getElementById("mySidenav").style.width = "0";
+              var img1 = document.getElementById('nav-lines');
+              var img2 = document.getElementById('nav-cross');
+              var content = document.getElementById('wrapper');
+              img1.style.display = "block";
+              img2.style.display = "none";
+              img2.style.left = "0px";
+
+                if(screen.width < 768){
+                  var icons = document.getElementsByClassName('indikko-sin');
+                  var work_icon = document.getElementsByClassName('want-work');
+                  console.log(work_icon);
+                  for (var i = 0 ; i < icons.length; i++) {
+                    icons.item(i).removeAttribute("style");
+                  }
+                  for (var i = 0; i < work_icon.length; i++ ) {
+                    work_icon.item(i).removeAttribute("style");
+                  }
+              }
+            } 
+          }
+
+         </script>
+
+         {% block jsBlock %}{% endblock %}
+         {% endblock %}     }

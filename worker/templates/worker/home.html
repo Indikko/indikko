@@ -1,0 +1,837 @@
+{% extends "core/base.html" %}
+{% block title %}Indico{% endblock %}
+
+{% block content %}
+
+{% load staticfiles %}
+<!-- Font Awesome -->
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
+<!-- Calendar -->
+<link href="{% static 'css/calendar.css'%}" rel="stylesheet">
+<link href="{% static 'css/style.css'%}" rel="stylesheet">
+
+<style>
+		#wrapper{
+			margin: 0px;
+		}
+		
+		#day-services-detail{
+			font-size: 24px;
+			height:100%;
+			margin:  10px 110px 10px 110px;
+		}
+		
+		#day-services-detail div{
+			font-size: 24px;
+			text-align:left;
+			color:#000000;
+			margin:10px 0px 0px;
+		}
+		
+		.service-detail-table{
+			font-size: 24px;
+			border-collapse:separate;
+		}
+		
+		.service-detail-table th{
+			width: 239px;
+			height:50px;
+			color:#000000;
+			background:#FFFFFF;
+			text-align:center;
+			border:solid #000000;
+			border-radius:20px 20px 0px 0px;
+			border-width:2px 1px 2px 1px;
+		}
+		.service-detail-table th:first-child{
+			border-width:2px 1px 2px 2px;
+		}
+		.service-detail-table th:last-child{
+			border-width:2px 2px 2px 1px;
+		}
+
+		.service-detail-table td{
+			width: 239px;
+			height:50px;
+			color:#000000;
+			text-align:center;
+			border:solid #000000;
+			border-width: 0px 0px 2px 0px;
+		}
+		.service-detail-table td:first-child{
+			border-width: 0px 0px 2px 2px;
+		}
+		.service-detail-table td:last-child{
+			border-width: 0px 2px 2px 0px;
+		}
+		
+		.service-detail-table .new-header {
+			color:#000000;
+			background:#EDEAF3;
+			text-align:center;
+			border: solid #000000;
+			border-radius:20px 20px 0px 0px;
+			border-width:2px 1px 2px 1px;
+		}
+
+		.service-detail-table .closed-header {
+			color:#000000;
+			background:#EDEAF3;
+			text-align:center;
+			border: solid #000000;
+			background: #46CE00;
+			border-radius:20px 20px 0px 0px;
+			border-width:2px 1px 2px 1px;
+		}
+		
+		.service-detail-table .pending-header {
+			color:#000000;
+			background:#EDEAF3;
+			background: #FF7F00;
+			text-align:center;
+			border: solid #000000;
+			border-radius:20px 20px 0px 0px;
+			border-width:2px 1px 2px 1px;
+		}
+		
+		.service-detail-table .closed{
+
+			width: 390px;
+			height: 200px;
+			background:#FFF1E4;
+			background-clip:content-box;
+			text-align: left;
+			padding:10px;
+			border-width: 0px;
+			animation:slideUp .5s ease-in forwards;
+			transform-origin:top center;
+			display:none;			
+		}
+
+		.service-detail-table .colored-tr-pending{
+			background:#FF7F00;
+		}
+
+		.service-detail-table .colored-tr-closed{
+			background:#46CE00;
+		}
+		
+
+		.service-detail-table .open{
+			width: 390px;
+			height: 200px;
+			background:#FFF1E4;
+			background-clip:content-box;
+			text-align: left;
+			padding:10px;
+			border-width: 0px;
+			transform-origin:top center;
+			animation:slideDown .2s ease-in forwards;  
+			visibility:visible;
+
+		}
+
+		@keyframes slideDown{
+			from{
+				transform:scaleY(0);
+			}
+			to{
+				transform:scaleY(1);
+			}
+		}
+
+		@keyframes slideUp{
+			from{
+				transform:scaleY(1);
+			}
+			to{
+				transform:scaleY(0);
+			}
+		}
+
+		.inside-table{
+			font-size: 24px;
+			float: left;
+		}
+
+
+
+		.inside-table th{
+			background: #4E2E81;
+			border: solid 2px;
+			border-radius: 0px;
+		}
+		
+		.inside-table td{
+			background: #FFFFFF;
+			color:#000000;
+			border: solid 2px;
+			border-radius: 0px;
+			margin-bottom:10px;
+		}
+			
+		.inside-table tbody{
+			margin-bottom: 10px;
+		}
+
+		.div_for_inside_table{
+			float: center;
+		}
+
+		.div_for_inside_table p{
+			float: left;
+		}
+
+
+#day-time-schedule {
+ padding: 10px;
+}
+.time-schedule-table  {
+ font-family: Roboto;
+ border-spacing:0px;
+ font-size:24px;
+ border-collapse:collapse;
+ color:#000000;
+}
+.time-schedule-table .ts-center{
+ font-weight:normal;
+ padding:10px 5px;border-style: solid;
+ border-width:2px;
+ text-align:center;
+ background: #4C2E81;
+ color: #FFFFFF;
+ border-color:#000000;
+ overflow:hidden;
+ word-break:normal;
+}
+.time-schedule-table .ts-hour{
+ font-weight:normal;
+ padding:10px 5px;border-style: solid;
+ border-width:2px;
+ border-color:#000000;
+ overflow:hidden;
+ word-break:normal;
+}
+.time-schedule-table .open{
+ font-weight:normal;
+ padding:10px 5px;border-style: solid;
+ border-width:2px;
+ color: #FFFFFF;
+ background: #000000;
+ border-color:#000000;
+ overflow:hidden;
+ word-break:normal;
+}
+.time-schedule-table .closed{
+ font-weight:normal;
+ padding:10px 5px;border-style: solid;
+ border-width:2px;
+ border-color:#000000;
+ background: #46CE00;
+ overflow:hidden;
+ word-break:normal;
+}
+.time-schedule-table .pending{
+ font-weight:normal;
+ padding:10px 5px;border-style: solid;
+ border-width:2px;
+ border-color:#000000;
+ background: #FF7F00;
+ overflow:hidden;
+ word-break:normal;
+}
+.time-schedule-table .th{
+ font-weight:normal;
+ padding:10px 5px;border-style: solid;
+ border-width:1px;
+ text-align:center;
+ border-color:#000000;
+ overflow:hidden;
+ word-break:normal;
+}
+
+.time-schedule-table .td{
+ font-weight:normal;
+ padding:10px 5px;border-style: solid;
+ border-width:1px;
+ text-align:center;
+ border-color:#000000;
+ overflow:hidden;
+ word-break:normal;
+}
+
+.div-calendar {
+    padding: 10px;
+}
+.calendar-table  {
+    font-family: Roboto;
+    border-collapse:separate;
+    border-spacing:0px;
+	font-size:24px;
+	color:#000000;
+}
+
+.calendar-table td{
+    border-style:solid;
+    border-width:1px;
+    overflow:hidden;
+	border-color:#000000;
+    word-break:normal;
+}
+.calendar-table th{
+    font-weight:normal;
+    padding:10px 5px;border-style: solid;
+    border-width:1px;
+	border-color:#000000;
+    overflow:hidden;
+    word-break:normal;
+}
+.calendar-table .calendar-header-day{
+    text-align:center;
+    padding-top:10px;
+    vertical-align:top;
+    border-left-width: 1px;
+    border-right-width: 0px;
+}
+.calendar-table .calendar-header-day:first-child{
+    border-left-width: 1px
+}
+.calendar-table .calendar-header-day:last-child{
+    border-right-width: 1px
+}
+.calendar-table .calendar-day{
+    text-align:right;
+    vertical-align:top;
+    border-left-width: 1px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+ }
+ .calendar-table .calendar-day:first-child{
+    border-left-width: 1px;
+}
+.calendar-table .calendar-day:last-child{
+    border-right-width: 1px;
+}
+ .calendar-table .today{
+	 background: #4C2E81;
+	 color:#FFFFFF;
+	 text-align:right;
+    vertical-align:top;
+	  border-color:#000000;
+    border-left-width: 1px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+}
+ .calendar-table .today-last-row{
+	 background: #4C2E81;
+	 color:#FFFFFF;
+	 text-align:right;
+    vertical-align:top;
+	  border-color:#000000;
+	   border-bottom-width:2px;
+}
+.calendar-table .calendar-day-last-row{
+    text-align:right;vertical-align:top;
+    border-bottom-width:1px;
+    border-left-width: 1px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+  }
+
+.calendar-table .calendar-day-last-row:first-child{
+    border-left-width: 1px;
+    border-radius: 0px 0px 0px 10px;
+}
+.calendar-table .calendar-day-last-row:last-child{
+    border-right-width: 1px;
+    border-radius: 0px 0px 10px 0px;
+}
+
+.calendar-table .calendar-table-center{
+	text-transform: uppercase;
+    vertical-align: top;
+    text-align: center;
+    border-left-width:0px;
+    border-right-width:0px;
+    border-bottom-width: 0px;
+ }
+.calendar-table .calendar-table-right{
+    vertical-align:top;
+    border-left-width:0px;
+     text-align: center;
+     border-radius: 0px 10px 0px 0px;
+     border-bottom-width: 0px;
+ }
+.calendar-table .calendar-table-left{
+    vertical-align:top;
+    border-right-width:0px;
+    text-align: center;
+    border-radius: 10px 0px 0px 0px;
+    border-bottom-width: 0px;
+}
+.calendar-table .open {
+    background: #000000;
+    text-align: center;
+	font-size:14px;
+	color:#FFFFFF;
+    position:relative;
+    margin-bottom: 5px;
+	margin-left: 0.2px;
+	margin-right: 0.2px;
+}
+.calendar-table .closed {
+    background: #46CE00;
+    text-align: center;
+	font-size:14px;
+    color:#000000;
+    position:relative;
+    margin-bottom: 5px;
+	margin-left: 0.2px;
+	margin-right: 0.2px;
+}
+.calendar-table .pending {
+    background: #FF7F00;
+    text-align: center;
+    color:#000000;
+	font-size:14px;
+    position:relative;
+    margin-bottom: 5px;
+	margin-left: 0.2px;
+	margin-right: 0.2px;
+}
+
+@media(min-width: 320px){
+    .calendar-table{
+        font-size:12px;
+    }
+	.calendar-table .open, .calendar-table .pending, .calendar-table .closed{
+
+        font-size:8px;
+    }
+    .calendar-table .today, .calendar-table .calendar-day, .calendar-table .calendar-day-last-row{
+
+    }
+}
+@media(min-width: 760px){
+    .calendar-table  {
+        font-size:18px;
+    }
+	.calendar-table .open, .calendar-table .pending, .calendar-table .closed{
+
+        font-size:14px;
+    }
+    .calendar-table .today, .calendar-table .calendar-day, .calendar-table .calendar-day-last-row{
+
+    }
+}
+@media(min-width: 1024px){
+    .calendar-table {
+        font-size:24px;
+    }
+    .calendar-table .open, .calendar-table .pending, .calendar-table .closed{
+        width: 100px;
+        font-size:14px;
+    }
+    .calendar-table .today, .calendar-table .calendar-day, .calendar-table .calendar-day-last-row{
+
+    }
+}
+
+
+</style>
+
+
+{% if messages %}
+	<ul class="messages">
+		{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+
+<div class="container" data-ng-app="indico">
+	{%if is_approved %}
+	    <h2>Avaliações Pendentes:</h2>
+		<table class="table table-striped">
+			<tr>
+				<th>Avaliador</th>
+				<th>E-Mail</th>
+				<th>Data da Avaliação</th>
+				<th>Ação</th>
+			</tr>
+		{% for we in user.get_core_worker_evaluation_worker_pending %}
+		    <tr id="tr_we_pending_{{we.id}}">
+				<td>{{ we.hirer.get_full_name }}</td>
+				<td>{{ we.hirer }}</td>
+				<td>{{ we.created }}</td>
+				<td>
+					<button class="btn btn-default btn-sm" id="btn_set_status_accept_we_{{we.id}}">
+						<span class="glyphicon glyphicon-ok"></span>
+					</button>
+					<button class="btn btn-default btn-sm" id="btn_set_status_reject_we_{{we.id}}">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+				</td>
+			</tr>
+		{% endfor %}
+        </table>
+        <div class="row-fluid">
+        <div id="main-calendar" class="div-calendar">Main Calendar</div>
+		
+        
+        
+        <div class="span-8">
+        <div id="day-time-schedule">Time schedule</div>
+        </div>		
+        
+        <div id="day-service">
+        </div>
+		<div id="day-services-detail">
+		</div>
+		</div>
+	{% else %}
+	    <div class="row-centered"><h1>Situação atual do cadastro:</h1>	<h2>{{status_msg}}</h2></div>
+	{% endif%}
+</div>
+
+{% endblock %}
+
+{% block jsBlock %}
+{% load staticfiles %}
+<!-- Moment -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment-with-locales.min.js"></script>
+<!-- AngularJS -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/i18n/angular-locale_pt-br.js"></script>
+<!-- Indico -->
+<script type="text/javascript" src="{% static 'js/angularjs/indico.js' %}"></script>
+<!-- hirer -->
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/hirer.module.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/services/hirer.service.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/controllers/hirer.controller.js' %}"></script>
+<!-- Worker -->
+<script type="text/javascript" src="{% static 'js/angularjs/worker/worker.module.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/worker/services/worker.service.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/directives/calendar.directive.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/worker/controllers/worker.controller.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/calendar.controller.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/time-schedule.controller.js' %}"></script>
+<script type="text/javascript">
+    
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+	});
+	$("[id^='btn_set_status_accept_we_']").click(
+		function(){
+			console.log($(this).attr("id"));
+		}
+	);
+    function set_status_for_workerevaluation(id, status) {
+        url = "{% url 'api_v1:set_status_we_ajax' %}";
+        data = {id:id, status:status};
+		$.post(
+            url,
+            data,
+			function(ret){
+				$('#telefone').val(data);
+			}
+		);
+	}
+
+	var cal = new MainCalendar();
+	cal.generateHTML();
+	document.getElementById("main-calendar").innerHTML = cal.getHTML();
+
+	callservice(cal.month+1, cal.year);
+
+	service_for_today(cal.day.getDate(), (cal.month+1), cal.year);
+
+	service_detail(cal.day.getDate());
+
+
+	function service_for_today(day, thisMonth, year){
+		document.getElementById("day-time-schedule").innerHTML = timeScheduleGenerator(day, thisMonth, year);
+		{% for open_services in month_open_services %}
+			{% for service in open_services %}
+					var splitDay = "{{service.date}}".split(" ");
+					var splitTime = "{{service.time}}".split(":");
+					if (splitDay[0] == day) {
+						if ("{{service.address}}" == "None"){
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).innerHTML = "<strong>{{service.time}}</strong>&nbsp;{{service.owner.first_name}} | ESTABELECIMENTO";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).className += " open";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).onclick = function() {service_detail(day,"{{service.status}}", {{service.id}});};
+
+						}else{
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).innerHTML = "<strong>{{service.time}}</strong>&nbsp;{{service.owner.first_name}} | DELIVERY";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).className += " open";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).onclick = function() {service_detail(day,"{{service.status}}", {{service.id}});};
+						}
+					}
+			{% endfor %}
+		{% endfor %}
+		{% for pending_services in month_pending_services %}
+			{% for service in pending_services %}
+					var splitDay = "{{service.date}}".split(" ");
+					var splitTime = "{{service.time}}".split(":");
+					if (splitDay[0] == day) {
+						if ("{{service.address}}" == "None"){ 
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).innerHTML = "<strong>{{service.time}}</strong>&nbsp;{{service.owner.first_name}} | ESTABELECIMENTO";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).className += " pending";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).onclick = function() {service_detail(day,"{{service.status}}", {{service.id}});};
+						}else{
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).innerHTML = "<strong>{{service.time}}</strong>&nbsp;{{service.owner.first_name}} | DELIVERY";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).className += " pending";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).onclick = function() {service_detail(day,"{{service.status}}", {{service.id}});};
+						}
+					}
+			{% endfor %}
+		{% endfor %}
+		{% for closed_services in month_closed_services %}
+			{% for service in closed_services %}
+					var splitDay = "{{service.date}}".split(" ");
+					var splitTime = "{{service.time}}".split(":");
+					if (splitDay[0] == day) {
+						if ("{{service.address}}" == "None"){ 
+							document.getElementById("hour-"+(parseInt(splitTime[0]))).innerHTML = "<strong>{{service.time}}</strong>&nbsp;{{service.owner.first_name}} | ESTABELECIMENTO";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).className += " closed";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).onclick = function() {service_detail(day,"{{service.status}}", {{service.id}});};
+						}else{
+							document.getElementById("hour-"+(parseInt(splitTime[0]))).innerHTML = "<strong>{{service.time}}</strong>&nbsp;{{service.owner.first_name}} | DELIVERY";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).className += " closed";
+							document.getElementById("hour-"+ (parseInt(splitTime[0]))).onclick = function() {service_detail(day,"{{service.status}}", {{service.id}});};
+						}
+					}
+			{% endfor %}
+		{% endfor %}
+		service_detail(day);
+	}
+	
+	function callservice(month, year){
+		var days_of_service = Array.apply(null, Array(32)).map(Number.prototype.valueOf,0);
+		var liretalMonth = month;
+		var i = 1;
+		{% for open_services in month_open_services %}
+			{% for service in open_services %}
+				console.log(days_of_service[i-1] + " - " + i);
+				if(days_of_service[i-1] < 3){
+					document.getElementById(i+ "-"+liretalMonth+"-"+year).innerHTML += "<div class=\"calendar-table open\">Confirmar<br></div>";
+					days_of_service[i-1]++;
+				}
+			{% endfor %}
+			i++;
+		{% endfor %}
+		var i = 1;
+		{% for pending_services in month_pending_services %}
+			{% for service in pending_services %}
+			console.log(days_of_service[i-1] + " - " + i);
+				if(days_of_service[i-1] < 3){
+					document.getElementById(i+ "-"+liretalMonth+"-"+year).innerHTML += "<div class=\"calendar-table pending\">{{service.time}} {{service.owner.first_name}}<br></div>";
+					days_of_service[i-1]++;
+				}
+			{% endfor %}
+			i++;
+		{% endfor %}
+		var i = 1;
+		{% for closed_services in month_closed_services %}
+			{% for service in closed_services %}
+			console.log(days_of_service[i-1] + " - " + i);
+				if(days_of_service[i-1] < 3){
+					document.getElementById(i+ "-"+liretalMonth+"-"+year).innerHTML += "<div class=\"calendar-table closed\">{{service.time}} {{service.owner.first_name}}<br></div>";
+					days_of_service[i-1]++;
+				}
+			{% endfor %}
+			i++;
+		{% endfor %}
+	}
+
+
+	function service_detail(day, service, service_id){
+		console.log("service_detal: " + day);
+		var html = '<div><strong>SOLICITAÇÕES DE SERVIÇOS</strong></div><br><table class="service-detail-table"><tr>';
+		if(service == null || service == "0"){
+			html += '<th class="new-header">NOVOS</th>';	
+			html += '<th class="service-header-table" onclick="service_detail(' + day +',99,99)">AGENDADOS</th>';
+			html += '<th class="service-header-table" onclick="service_detail(' + day +',4,99)">CONCLUÍDOS</th></tr>';
+			{% for open_services in month_open_services %}
+				{% for service in open_services %}
+					var splitDay = "{{service.date}}".split(" ");
+					if (day == splitDay[0]) {
+						if ("{{service.address}}" == "None"){ 
+							html += '<tr><td id="service-{{service.id}}"><strong>COD. {{service.id}}</td><td>{{service.owner.first_name}}</td><td>ESTABELECIMENTO&nbsp;</strong><img value="{{service.id}}" id="img-{{service.id}}" class="img-arrow-90" onclick="service_description({{service.id}})" src="{% static 'images/layout/seta.png' %}" ></td></tr>';
+							html += '<tr><td colspan="3" id="description-{{service.id}}" class="closed" >' +
+								'<br>SOLICITANTE: <br><strong>{{service.owner.get_full_name}}</strong><br>' +
+								'<strong>Endereço:</strong><br>' +
+								'<strong>{{service.address}}</strong><br>' +
+								'DATA: <br><strong>{{service.date}} {{service.time}}</strong><br>';
+							html += '<div class="div_for_inside_table"><table class="inside-table">' +
+									'<tr><th class="inside-table">Serviços oferecidos</th></tr>' +
+									'<tr><td class="inside-table">{{service.service_provided.service_type.description}}</td></tr>'+
+									'<tr><th class="inside-table">Tempo de Duração</th></tr>' +
+									'<tr><td class="inside-table">{{service.service_provided.duration}} Minutos</td></tr>' +
+									'<tr><th class="inside-table">Valor</th></tr>' +
+									'<tr><td class="inside-table">R$ {{service.service_provided.price}}</td></tr>' +
+									'</table>'+
+									'<div id="service-detail-inside-table-{{service.id}}"></div></td></tr>';
+
+						}else{
+							html += '<tr><td id="service-{{service.id}}"><strong>COD. {{service.id}}</td><td>{{service.owner.first_name}}</td><td>DELIVERY&nbsp;</strong><img value="{{service.id}}" id="img-{{service.id}}" class="img-arrow-90" onclick="service_description({{service.id}})" src="{% static 'images/layout/seta.png' %}" ></td></tr>';
+							html += '<tr><td colspan="3" id="description-{{service.id}}" class="closed" >' +
+								'<br>SOLICITANTE: <br><strong>{{service.owner.get_full_name}}</strong><br>' +
+								'<strong>Endereço:</strong><br>' +
+								'<strong>{{service.address}}</strong><br>' +
+								'DATA: <br><strong>{{service.date}} {{service.time}}</strong><br>';
+							html += '<div class="div_for_inside_table"><table class="inside-table">' +
+									'<tr><th class="inside-table">Serviços oferecidos</th></tr>' +
+									'<tr><td class="inside-table">{{service.service_provided.service_type.description}}</td></tr>'+
+									'<tr><th class="inside-table">Tempo de Duração</th></tr>' +
+									'<tr><td class="inside-table">{{service.service_provided.duration}} Minutos</td></tr>' +
+									'<tr><th class="inside-table">Valor</th></tr>' +
+									'<tr><td class="inside-table">R$ {{service.service_provided.price}}</td></tr>' +
+									'</table>'+
+									'<div id="service-detail-inside-table-{{service.id}}"></div></td></tr>';
+						}
+					}
+				{% endfor %}
+			{% endfor %}
+		}else{
+			if (service == "4") {
+				html += '<th class="service-header-table"  onclick="service_detail(' + day +',0,99)">NOVOS</th>';
+				html += '<th class="service-header-table"  onclick="service_detail(' + day +',99,99)">AGENDADOS</th>';
+				html += '<th class="closed-header">CONCLUÍDOS</th></tr>';
+				{% for closed_services in month_closed_services %}
+					{% for service in closed_services %}
+						var splitDay = "{{service.date}}".split(" ");
+						if (day == splitDay[0]) {
+							if ("{{service.address}}" == "None"){ 
+								html += '<tr class="colored-tr-closed"><td id="service-{{service.id}}"><strong>COD. {{service.id}}</strong></td><td><strong>{{service.owner.first_name}}</strong></td><td><strong>ESTABELECIMENTO&nbsp;</strong><img value="{{service.id}}" id="img-{{service.id}}" class="img-arrow-90" onclick="service_description({{service.id}})" src="{% static 'images/layout/seta.png' %}" ></td></tr>';
+								html += '<tr><td colspan="3" id="description-{{service.id}}" class="closed" >' +
+									'<br>SOLICITANTE: <br><strong>{{service.owner.get_full_name}}</strong><br>' +
+									'<strong>Endereço:</strong><br>' +
+									'<strong>{{service.address}}</strong><br>' +
+									'DATA: <br><strong>{{service.date}} {{service.time}}</strong><br>';
+								html += '<div class="div_for_inside_table"><table class="inside-table">' +
+										'<tr><th class="inside-table">Serviços oferecidos</th></tr>' +
+										'<tr><td class="inside-table">{{service.service_provided.service_type.description}}</td></tr>'+
+										'<tr><th class="inside-table">Tempo de Duração</th></tr>' +
+										'<tr><td class="inside-table">{{service.service_provided.duration}} Minutos</td></tr>' +
+										'<tr><th class="inside-table">Valor</th></tr>' +
+										'<tr><td class="inside-table">R$ {{service.service_provided.price}}</td></tr>' +
+										'</table>'+
+										'<div id="service-detail-inside-table-{{service.id}}"></div></td></tr>';
+
+							}else{
+								html += '<tr class="colored-tr-closed"><td id="service-{{service.id}}"><strong>COD. {{service.id}}</strong></td><td><strong>{{service.owner.first_name}}</strong></td><td><strong>DELIVERY&nbsp;</strong><img value="{{service.id}}" id="img-{{service.id}}" class="img-arrow-90" onclick="service_description({{service.id}})" src="{% static 'images/layout/seta.png' %}" ></td></tr>';
+								html += '<tr><td colspan="3" id="description-{{service.id}}" class="closed" >' +
+									'<br>SOLICITANTE: <br><strong>{{service.owner.get_full_name}}</strong><br>' +
+									'<strong>Endereço:</strong><br>' +
+									'<strong>{{service.address}}</strong><br>' +
+									'DATA: <br><strong>{{service.date}} {{service.time}}</strong><br>';
+								html += '<div class="div_for_inside_table"><table class="inside-table">' +
+										'<tr><th class="inside-table">Serviços oferecidos</th></tr>' +
+										'<tr><td class="inside-table">{{service.service_provided.service_type.description}}</td></tr>'+
+										'<tr><th class="inside-table">Tempo de Duração</th></tr>' +
+										'<tr><td class="inside-table">{{service.service_provided.duration}} Minutos</td></tr>' +
+										'<tr><th class="inside-table">Valor</th></tr>' +
+										'<tr><td class="inside-table">R$ {{service.service_provided.price}}</td></tr>' +
+										'</table>'+
+										'<div id="service-detail-inside-table-{{service.id}}"></div></td></tr>';
+							}
+						}
+					{% endfor %}
+				{% endfor %}
+
+			}else{
+				html += '<th class="service-header-table" onclick="service_detail(' + day +',0,99)">NOVOS</th>';	
+				html += '<th class="pending-header" >AGENDADOS</th>';
+				html += '<th class="service-header-table" onclick="service_detail(' + day +',4,99)">CONCLUÍDOS</th></tr>';
+				{% for pending_services in month_pending_services %}
+					{% for service in pending_services %}
+						var splitDay = "{{service.date}}".split(" ");
+						if (day == splitDay[0]) {
+							if ("{{service.address}}" == "None"){ 
+								html += '<tr class="colored-tr-pending"><td id="service-{{service.id}}"><strong>COD. {{service.id}}<strong></td><td></strong>{{service.owner.first_name}}</strong></td><td><strong>ESTABELECIMENTO&nbsp;</strong><img value="{{service.id}}" id="img-{{service.id}}" class="img-arrow-90" onclick="service_description({{service.id}})" src="{% static 'images/layout/seta.png' %}" ></td></tr>';
+								html += '<tr><td colspan="3" id="description-{{service.id}}" class="closed" >' +
+									'<br>SOLICITANTE: <br><strong>{{service.owner.get_full_name}}</strong><br>' +
+									'<strong>Endereço:</strong><br>' +
+									'<strong>{{service.address}}</strong><br>' +
+									'DATA: <br><strong>{{service.date}} {{service.time}}</strong><br>';
+								html += '<div class="div_for_inside_table"><table class="inside-table">' +
+										'<tr><th class="inside-table">Serviços oferecidos</th></tr>' +
+										'<tr><td class="inside-table">{{service.service_provided.service_type.description}}</td></tr>'+
+										'<tr><th class="inside-table">Tempo de Duração</th></tr>' +
+										'<tr><td class="inside-table">{{service.service_provided.duration}} Minutos</td></tr>' +
+										'<tr><th class="inside-table">Valor</th></tr>' +
+										'<tr><td class="inside-table">R$ {{service.service_provided.price}}</td></tr>' +
+										'</table>'+
+										'<div id="service-detail-inside-table-{{service.id}}"></div></td></tr>';
+
+							}else{
+								html += '<tr class="colored-tr-pending"><td id="service-{{service.id}}"><strong>COD. {{service.id}}</strong></td><td><strong>{{service.owner.first_name}}</strong></td><td><strong>DELIVERY&nbsp;</strong><img value="{{service.id}}" id="img-{{service.id}}" class="img-arrow-90" onclick="service_description({{service.id}})" src="{% static 'images/layout/seta.png' %}" ></td></tr>';
+								html += '<tr><td colspan="3" id="description-{{service.id}}" class="closed" >' +
+									'<br>SOLICITANTE: <br><strong>{{service.owner.get_full_name}}</strong><br>' +
+									'<strong>Endereço:</strong><br>' +
+									'<strong>{{service.address}}</strong><br>' +
+									'DATA: <br><strong>{{service.date}} {{service.time}}</strong><br>';
+								html += '<div class="div_for_inside_table"><table class="inside-table">' +
+										'<tr><th class="inside-table">Serviços oferecidos</th></tr>' +
+										'<tr><td class="inside-table">{{service.service_provided.service_type.description}}</td></tr>'+
+										'<tr><th class="inside-table">Tempo de Duração</th></tr>' +
+										'<tr><td class="inside-table">{{service.service_provided.duration}} Minutos</td></tr>' +
+										'<tr><th class="inside-table">Valor</th></tr>' +
+										'<tr><td class="inside-table">R$ {{service.service_provided.price}}</td></tr>' +
+										'</table>'+
+										'<div id="service-detail-inside-table-{{service.id}}"></div></td></tr>';
+							}
+						}
+					{% endfor %}
+				{% endfor %}
+			}
+		}
+
+		html += '</table>'
+		document.getElementById("day-services-detail").innerHTML = html;
+	}
+
+	function service_description(service_id){
+		var img = document.getElementById('img-'+service_id);
+		var element = document.getElementById('description-'+service_id);
+		
+		if (element.className =="open") {
+			element.className = "closed";
+			img.className = "img-arrow-90";
+		}else{
+			element.className ="open";
+			img.className = "img-arrow";
+		}
+
+		console.log("img cliked");
+        var service_id = img.getAttribute("value");
+
+        var url = 'set_service_status/';
+            
+        $.get(url,{id:service_id}, function(data){
+            $("#service-detail-inside-table-"+service_id).html(data);
+        });
+	}
+</script>
+{% endblock %}

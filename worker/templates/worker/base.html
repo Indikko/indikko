@@ -1,0 +1,314 @@
+{% extends 'real_base.html' %}
+
+{% load staticfiles %}
+
+{% block allhead %}
+<title>Indikko</title>
+
+<!-- core CSS -->
+  <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap-social.css'%}" rel="stylesheet">
+  <link href="{% static 'css/font-awesome.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/animate.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/prettyPhoto.css'%}" rel="stylesheet">
+  <link href="{% static 'css/main.css'%}" rel="stylesheet">
+  <link href="{% static 'css/responsive.css'%}" rel="stylesheet">
+  <link href="{% static 'css/style.css'%}" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+  <link rel="shortcut icon" href="{% static 'images/ico/favicon.ico' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'images/ico/apple-touch-icon-144-precomposed.png'%}">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'images/ico/apple-touch-icon-114-precomposed.png'%}">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'images/ico/apple-touch-icon-72-precomposed.png'%}">
+  <link rel="apple-touch-icon-precomposed" href="{% static 'images/ico/apple-touch-icon-57-precomposed.png'%}">
+{% endblock %}
+
+{% block body %}
+  <style type="text/css">
+  #wrapper {
+    transition: margin-left .5s;
+    padding: 0px;
+    margin: 0px;
+    overflow: scroll;
+  }
+  .navbar-inverse>.container{
+    width: auto;
+  }
+  .navbar{
+    padding: 0px;
+  }
+  .indikko-navbar{
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+  #nav-lines{
+    display: block;
+    float: left;
+    margin-left: 41px;
+    height: 60px;
+  }
+  #nav-cross{
+    display: none;
+    float: left;
+    margin-left: 30px;
+    height: 60px;
+  }
+  #header{
+    margin-bottom: 0px;
+  }
+  .indikko-navbar>.row{
+    text-align:center;
+  }
+
+  .indikko-logo{
+    height: 60px;
+    left: 45%;
+    position: absolute;
+  }
+
+  .want-work{
+    height: 60px;
+    position: absolute;
+    left: 212px;
+    top: 18px;
+  }
+  .indikko-sin{
+      height: 60px;
+      position: absolute;
+      left: 94.578%;
+  }
+
+  /* Mobile Screen (01)*/
+  @media screen and (max-width: 548px){
+    #nav-lines, #nav-cross{
+      height: 22px;
+      margin-left: 10px;
+    }
+
+    .want-work{
+      height: 18px;
+      left: 212px;
+      top: 18px;
+    }
+
+    .indikko-logo{
+      height: 22px;
+      left: 40%;
+
+    }
+
+    .indikko-sin{
+      height: 22px;
+      left: 91.578%;
+    }
+  }
+
+
+  /* Tablet Screen (02) */
+  @media screen and (max-width: 768px) and (min-width: 548px){
+    #nav-lines, #nav-cross{
+    height: 42px;
+      margin-left: 10px;
+    }
+
+    .want-work{
+      height: 18px;
+      left: 212px;
+      top: 18px;
+    }
+
+    .indikko-logo{
+      height: 42px;
+      left: 40%;
+
+    }
+
+    .indikko-sin{
+      height: 42px;
+      left: 91.578%;
+    }
+
+  }
+    /* iPad Pro Screen (03) */
+  @media screen and (max-width: 1024px) and (min-width: 768px){
+    .indikko-logo{
+      left: 40%;
+    }
+    .indikko-sin{
+      left: 91.578%;
+    }
+
+    #nav-lines, #nav-cross{
+      margin-left: 10px;
+    }
+
+  }
+
+  </style>
+
+  <div id="wrapper" style="margin: 0px;">
+    <header id="header">
+      <nav class="navbar navbar-inverse" role="banner">
+        <div class="container">
+          {% if not user.is_anonymous %}
+          <div id="mySidenav" class="sidenav">
+            <ul class="nav top-nav navbar-account">
+              <li class="dropdown">
+                {% if user.is_worker %}
+                  <a href="{%url 'worker:home' %}"><i class="fa fa-fw fa-calendar fa-1-4x"></i> Minha Agenda</a>
+                {% else %}
+                  <a href="{%url 'core:schedule' %}"><i class="fa fa-fw fa-calendar fa-1-4x"></i> Minha Agenda</a>
+                {% endif %}
+                <a href="{%url 'core:settings' %}"><i class="fa fa-user fa-1-4x"></i> &nbsp;
+                {% if user and not user.is_anonymous %}
+                  {{ user.get_full_name|default:user.email }}
+                {% endif %}
+                <a href="{% url 'auth:logout' %}?next={% url 'indico:home' %}"><i class="fa fa-fw fa-power-off"></i> Sair</a>
+              </li>
+            </ul>
+          </div>
+          {% else %}
+          <div id="mySidenav" class="sidenav">
+            <ul class="nav top-nav navbar-account">
+              <li class="dropdown">
+                <a href="{% url 'auth:logout' %}?next={% url 'indico:home' %}"><i class="fa fa-fw fa-power-off"></i> Sair</a>
+              </li>
+            </ul>
+          </div>
+          {% endif %}
+          <div class="indikko-navbar">
+            <div class="row">
+                <img id="nav-lines" class="nav navbar-left top-nav " src="{%static 'images/layout/sidebar-line.png'%}" onclick="openNav()">
+                <img id="nav-cross" class="nav navbar-left top-nav " src="{%static 'images/layout/sidebar-cross.png'%}" onclick="closeNav()">
+                {% if not user.is_anonymous %}
+                <a   href="{% url 'core:home' %}" ><img class="indikko-logo" src="{% static 'images/logo.png'%}" /></a>
+                {% if not user.is_worker %}
+                  <a href="{%url 'worker:subscription' %}"><img class="want-work" src="{% static 'images/layout/icon-seja-um-profissional.png' %}"></a>
+                {% endif %}
+                <ul>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img class="indikko-sin" src="{% static 'images/layout/sino-w.png' %}">
+                  </a>
+                  <ul id="notifications" class="dropdown-menu alert-dropdown"></ul>
+                </ul>
+                {% else %}
+                <a  href="{% url 'core:home' %}" ><img class="indikko-logo" src="{% static 'images/logo.png'%}" /></a>
+                {% endif %}
+            </div>
+        </div>
+      </nav><!--/nav-->
+
+          </header><!--/header-->
+
+
+    <div class="container">
+    {% block content %}{% endblock %}
+    </div>
+    <div id="push"></div>
+  </div>
+
+  <script>
+	    // Comentei para fazer a página funcionar
+	    //function getNotifications(){
+		//	$.get('/usuario/alertas/', function (data){
+	 	//	  $("#notifications").html (data);
+		//	});
+		//}
+
+	    function getNotifications(){
+			$.get('/usuario/alertas/', function (data){
+				$("#notifications").html (data);
+			});
+	    }
+
+	    $(document).ready(function(){
+		    setInterval(function(){ getNotifications(); }, 2000);
+	    });
+      
+		$("[id^='btn_set_status_accept_we_']").click(
+			function(){
+				var element_id = $(this).attr("id")
+				var idx = element_id.slice(element_id.lastIndexOf("_")+1);
+				var ret = confirm("Você confirma o ACEITE da avaliação nr."+idx+"?")
+
+				if (ret==true){
+					url = "{% url 'api_v1:set_status_we_ajax' %}";
+					data = {id:idx, status:'A'};
+					$.post(
+						url,
+						data,
+						function(ret){
+							if(ret=='ok'){
+								$('#tr_we_pending_'+idx).remove();
+							}
+							else{
+								alert("Falha na solicitação: "+ret);
+							}
+						}
+					);
+				}
+			}
+		);
+		$("[id^='btn_set_status_reject_we_']").click(
+			function(){
+				var element_id = $(this).attr("id")
+				var idx = element_id.slice(element_id.lastIndexOf("_")+1);
+				var ret = confirm("Você confirma o REJEITO da avaliação nr."+idx+"?")
+
+				if (ret==true){
+					url = "{% url 'api_v1:set_status_we_ajax' %}";
+					data = {id:idx, status:'R'};
+					$.post(
+						url,
+						data,
+						function(ret){
+							if(ret=='ok'){
+								$('#tr_we_pending_'+idx).remove();
+							}
+							else{
+								alert("Falha na solicitação: "+ret);
+							}
+						}
+					);
+				}
+			}
+        );
+
+    
+          function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            var img1 = document.getElementById('nav-lines');
+            var img2 = document.getElementById('nav-cross');
+            var content = document.getElementById('wrapper');
+
+      img1.style.display = "none";
+      img2.style.display = "block";
+            content.style.marginLeft = "250px";
+
+
+          }
+
+          /* Set the width of the side navigation to 0 */
+          function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            var img1 = document.getElementById('nav-lines');
+            var img2 = document.getElementById('nav-cross');
+            var content = document.getElementById('wrapper');
+            img1.style.display = "block";
+            img2.style.display = "none";
+            content.style.marginLeft = "0px";
+
+
+      
+          } 
+
+          
+
+
+	</script>
+
+
+    {% block jsBlock %}{% endblock %}
+{% endblock %}

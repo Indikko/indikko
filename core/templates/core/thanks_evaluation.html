@@ -1,0 +1,33 @@
+{% extends "core/base.html" %}
+{% load staticfiles tz %}
+{% block title %}Indikko{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+<style type="text/css">
+	.thanks-text{
+		text-align: center;
+		margin-top: 20px;
+		font-size: 28px;
+		font-family: robotoMedium;
+	}
+
+	.thanks-text a{
+		background: rgba(48,4,95,0.8);
+		color: white;
+		font-size: 18px;
+		border-radius: 15px;
+		padding: 10px;
+	}
+</style>
+<div class="thanks-text">
+	<div id="agradecimento-de-avaliacao-e-fornecimento-de-vale-compra-aae0d9bd195aad90109e"></div>
+	
+</div>
+
+<script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/rdstation-forms/stable/rdstation-forms.min.js"></script>
+<script type="text/javascript">
+  new RDStationForms('agradecimento-de-avaliacao-e-fornecimento-de-vale-compra-aae0d9bd195aad90109e-html', 'UA-90180156-1').createForm();
+</script>
+
+{% endblock %}

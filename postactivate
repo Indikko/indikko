@@ -1,0 +1,6 @@
+#!/bin/bash
+# This hook is sourced after this virtualenv is activated.
+export AWS_ACCESS_KEY_ID="AKIAIMJ2SRPLANZCNFTA"
+export AWS_SECRET_ACCESS_KEY="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"
+export S3_BUCKET_NAME="indicoapp"
+export DATABASE_URL="postgres://postgres:postgres@localhost:5432/indico"

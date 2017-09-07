@@ -1,0 +1,7 @@
+Olá {{worker.get_full_name}},
+
+O usuário {{hirer.get_full_name}} solicitou a realização de um novo serviço para o dia {{service.date}} às {{service.time}}
+Acesse {{url}} e verifique os detalhes do agendamento.
+
+Atenciosamente,
+Atendimento Indico

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Indikko - Configurações{% endblock %}
+
+{% block content %}
+{% load app_extras %}
+
+<div class="row-centered">
+
+	<p class="lead" style="display: inline-block; width: 500px;">
+		Ocorreu um erro na autenticação do usuário do indico. Entre em contato com suporte@indikko.com para maiores informações</p>
+	<p class="text-danger">
+		{{message}}
+	</p>
+</div>
+{% endblock %}

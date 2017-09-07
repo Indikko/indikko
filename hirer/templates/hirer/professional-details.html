@@ -1,0 +1,112 @@
+{% extends "core/base.html" %}
+{% load staticfiles tz %}
+{% block title %}Indikko - Pesquisa de profissionais{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+<div class="row">
+  <div class="col-md-8">
+    <p>
+      <img 
+        class="img-responsive" 
+        src="{% if worker.photo %}{{worker.photo.url}}{% else %}https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png{% endif %}"/>
+    </p>
+    <p>
+      <h2>{{worker.get_full_name}}</h2>
+      <p>
+      {% for c in categoriesSet %}
+      <th><strong>{{c}}</strong></th>
+      {% endfor %}
+      </p>
+      <p>{{worker.resume}}</p>
+      {% if worker.skills %}
+      <h2><strong>Habilidades</strong></h2>
+      <hr/>
+      {% for s in worker.skills.all %}
+      <li>{{s.description}}</li>
+      {% endfor %}
+      {% endif %}
+  </p>
+  {% if worker.phone_number %}
+  <label for="telefone">Telefone</label>
+  <input id="telefone" type="text" value="{{worker.get_phone_truncated}}" readonly="readonly"/>
+  <button onclick="get_phone({{worker.id}});">Mostrar telefone</button>
+  {% else %}
+  <p class="warning">Não há telefone registrado</p>
+  {% endif %}
+    <p>
+      {% if recomendacoes %}
+      <h3>Amigos que recomendam</h3>
+      <hr/>
+      {% for f in recomendacoes %}
+      <img style="width:80px;" class="img-thumbnail" src="{% if f.hirer.photo %}{{f.hirer.photo.url}}{% else %}https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png{% endif %}" />
+      {% endfor %}
+      {% endif %}
+    </p>
+    
+    <p>
+    {% if servicepro %}
+    <h2><strong>Serviços</strong></h2>
+    <hr/>
+    <div class="panel-body">
+    {% for s in worker.get_serviceprovided %}
+    <div class="col-sm-9">
+    <div class="col-sm-4">
+      <span style="font-size: 2em; font-family: 'Josefin Slab', serif;">{{s.service_type.description}}</span>
+    </div>
+    <div class="col-sm-3">
+      <img src="{% static 'images/layout/clock.png' %}" />
+      <span style="color: #A8A8A8; font-size: 1.2em; font-family: 'Archivo Black', sans-serif;">{{s.duration}}</span>
+      <span style="color: #A8A8A8; font-size: 1.2em; font-family: 'Archivo Black', sans-serif;"> Minutos</span>
+    </div>
+    <div class="col-sm-3 text-right">
+      <p style="font-size: 2em; font-family: 'Josefin Slab', serif;">R$ {{s.price}}</p>
+    </div>
+    <div class="col-sm-2">
+      <a class="btn btn-default" href="/usuario/agendamento/{{s.id}}/">AGENDAR</a>
+    </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    </p>
+    </div>
+    <p>
+      {% if evaluations %}
+      <h2><strong>Avaliações</strong></h2>
+      <hr/>
+      {% for e in evaluations %}
+      <blockquote>
+        <table>
+          <tr>
+            <td><img style="width:80px;" class="img-thumbnail" src="{% if e.hirer.photo %}{{e.hirer.photo.url}}{% else %}https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png{% endif %}" /></td>
+            <td style="vertical-align: top; padding-left: 10px; padding-top: 5px;">{{e.testimonial}}</td>
+          </tr>
+        </table>
+        <p></p>
+        <footer>
+        {{e.hirer.get_full_name}}<cite title="Source Title">, Nota: {{e.partial_rate}}</cite><br />
+        <cite title="Source Title">Pontualidade: {{e.punctuality}}</cite><br />
+        <cite title="Source Title">Qualidade: {{e.quality}}</cite><br />
+        <cite title="Source Title">Confiança: {{e.trust}}</cite><br />
+        <cite title="Source Title">Preço: {{e.cost_benefit}}</cite><br />
+         </footer>
+      </blockquote>
+      {% endfor %}
+      {% endif %}
+    </p>
+  </div>
+</div>
+{% endblock %}
+{% block jsBlock %}
+    <script type="text/javascript">
+        function get_phone(id) {
+            url = "{% url 'api_v1:get_phone_ajax' %}?id="+id;
+            $.get(
+                url,
+                function(data){
+                    $('#telefone').val(data);
+                }
+            );
+        }
+    </script>
+{% endblock %}

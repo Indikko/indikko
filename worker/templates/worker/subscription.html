@@ -1,0 +1,104 @@
+{% extends "core/base.html" %}
+{% block title %}Indico{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+
+<section id="subscription">
+  <div class="container">
+    <form id="subscription-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="row">
+        <h1>Formulário de inscrição</h1>
+        <p class="text-muted">Para fazer parte do Indico e anunciar o seu serviço precisamos saber um pouco mais sobre você.</p>
+      </div>
+      <div class="row">
+        <div id="wizard">
+          <div class="tab-content">
+                <div class="form-group">
+                  <label for="{{ formPhone.number.id_for_label }}">{{formPhone.number.label}}</label>
+                  {{formPhone.number}}
+                </div>
+                <div class="form-group">
+                  <label for="{{ form.category.id_for_label }}">{{form.category.label}}</label>
+                  {{form.category}}
+                </div>
+                  <!--<div id="skills"></div>-->
+                  <!--<div class="form-group">
+                    <label for="{{ form.category.id_for_label }}">{{form.resume.label}}</label>
+                    {{form.resume}}
+                  </div>-->
+                  <div class="form-group">
+                    <label for="{{ form.id_doc.id_for_label }}">{{form.id_doc.label}}</label>
+                    {{form.id_doc}}
+                    <p class="help-block">{{form.id_doc.help_text}}</p>
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ form.cpf_doc.id_for_label }}">{{form.cpf_doc.label}}</label>
+                    {{form.cpf_doc}}
+                    <p class="help-block">{{form.cpf_doc.help_text}}</p>
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ form.address_proof.id_for_label }}">{{form.address_proof.label}}</label>
+                    {{form.address_proof}}
+                    <p class="help-block">{{form.address_proof.help_text}}</p>
+                  </div>
+
+                  <div class="form-group">
+                    {{form.accept_tc}} Li e aceito os
+                    <a href="{%url 'indico:terms' %}" target="popup"
+                    onclick="window.open('{%url 'indico:terms' %}','popup','width=600,height=600,scrollbars=yes,resizable=yes'); return false;"> Termos e condições de uso</a> do Indico
+                  </div>
+              <div class="pager">
+                <div style="float:right">
+                  <input type='submit' class='btn button-next finish' name='finish' value='Finalizar' />
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block jsBlock %}
+
+<script src="{% static 'js/jquery.validate.min.js'%}"></script>
+
+<script>
+  jQuery.extend(jQuery.validator.messages, {
+    required : "Preenchimento obrigatório",
+    minlength: jQuery.validator.format("Requer pelo menos {0} characters."),
+    digits: "Esse campo aceita apenas números"
+  });
+   $(document).ready(function(){
+    var validator = $('#subscription-form').validate({
+      rules : {
+        number : {
+          required : true,
+          minlength: 8
+        },
+        skills : {
+          required : true,
+          minlength : 1
+        },
+        accept_tc : {
+          required : true
+        }
+      }
+      /*messages: {
+        skills : {
+          required : "É necessário selecionar pelo menos uma habilidade."
+        }
+      }*/
+    }
+  );
+  });
+
+   $("#id_number").mask("(99) 99999-9999");
+
+</script>
+
+{% endblock %}

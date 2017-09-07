@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+{% load staticfiles %}
+{% block title %}Indikko - Pesquisa de profissionais{% endblock %}
+
+{% block content %}
+<form method="post">
+{% csrf_token %}
+{{form.mobile_number}}
+<button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
+{{form.pin}}
+<button class="btn" type="submit"><i class="icon-share"></i> Validar!</button>
+</form>
+
+{% endblock %}
+{% block jsBlock %}
+    <script type="text/javascript">
+        function send_pin() {
+            $.ajax({
+                url: "{% url 'api_v1:send_pin_ajax' %}",
+                type: "GET",
+                data: { mobile_number:  $("#id_mobile_number").val() },
+            })
+            .done(function(data) {
+                alert("PIN sent via SMS!");
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown + ' : ' + jqXHR.responseText);
+            });
+        }
+    </script>
+{% endblock %}

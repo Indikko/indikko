@@ -1,0 +1,5 @@
+Olá Administrador,
+
+O usuário {{user.get_full_name}} solicitou uma inscrição de trabalhador no Indico. Para avaliar a inscrição dele acesse o cadastro no link:
+
+{{link}}

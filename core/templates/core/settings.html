@@ -1,0 +1,861 @@
+{% extends "core/base.html" %}
+{% block title %}Indikko{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+{% load app_extras %}
+{% load l10n %}
+
+
+  
+<style type="text/css">
+    .container{
+      width: 100%;
+      margin-right: 0px;
+      margin-left: 0px;
+    }
+
+    .inside{
+      width: 60%;
+      margin-right: auto;
+      margin-left: auto;
+
+    }
+    #send_img{
+       position: relative;
+       font-size: 16px;
+       width: 150px;
+       padding: 10px;
+       margin-left: 15px;
+       margin-top: 30px;
+       color: #FFFFFF;
+       text-align: center;
+       background-color: #4e2e81;
+       cursor:pointer;
+     }
+    .settings_button{
+       position: relative;
+       font-size: 16px;
+       width: 150px;
+       padding: 10px;
+       margin-top: 30px;
+       color: #FFFFFF;
+       border: 1px solid;
+       text-align: center;
+       background-color: #4e2e81;
+       cursor:pointer;  
+     }
+    .add_address{
+      margin-left: 15px;
+      color: #4e2f7f;
+      font-style: italic;
+      text-decoration: underline;
+    }
+    .sec-address{
+      height: 100%
+    }
+
+    .background-address{
+      height: 153px;
+      background-color: #4e2e81;
+      
+      clip-path: polygon(0 15px, 100% 0, 100% 90%, 0 100%);
+    }
+    .background-address p{
+      font-size: 14px;
+
+    }
+    .places-wrap{
+      border: none;
+    }
+    .places-wrap h3, .places-wrap h2{
+      color: white;
+    }
+
+    h3{
+      color: white;
+    }
+
+    h2{
+      margin-left: 15px;
+    }
+
+    .checkbox-inline{
+      font-family: robotoLight;
+      display: block;
+      font-size: 18px;
+    }
+
+    .float-title p{
+      margin-top: 60px;
+      text-align: center;
+      font-size: 26px;
+    }
+
+    .float-subtitle p{
+      font-size: 12px;
+      margin-left: 28%;
+    }
+
+    .img-profile{
+      display: block;
+      max-width: 100%;
+      height: 200px;
+      width: 200px;
+      border:1px solid #000000;
+    }
+
+    .img-request p{
+      font-size: 12px;
+      padding-left: 15px;
+      padding-top: 10px;
+    }
+
+    .background-phone{
+      background-color: #4e2e81;
+      height: 100%;
+      clip-path: polygon(0 0, 100% 10%, 100% 95%, 0 100%);
+    }
+
+    #DomicileForm{
+      color: white;
+      padding-top: 30px;
+      height: 120px;
+      font-size: 22px;
+    }
+
+    .background-table{
+      background-color: #f7f7f7;
+    }
+
+    .availability-table{
+      width: 80%;
+      margin-left: 10%;
+      text-align: center;
+      margin-right: 10%;
+    }
+    .availability-header{
+      text-align: center;
+      background-color: #fff;
+      width: 100%;
+    }
+
+    .availability-header th{
+      text-align: center;
+      background-color: #4e2e81;
+      width: 100%;
+      color: #fff;
+      font-size: 20px;
+      font-family: robotoMedium;
+      line-height: 40px;
+      border-radius: 10px 10px 0px 0px ;
+    }
+
+    .availability-table td{
+      margin-left: 10px;
+      border-bottom: 1px solid white;
+    }
+
+    .sec-availability{
+      margin-top: 30px;
+    }
+
+    .sec-availability p{
+      margin-left: 10%;
+      font-size: 14px;
+    }
+
+    .buttonOk{
+      color: white;
+      background: #4e2e81;
+      border: 1px solid rgba(0,0,0,0);
+    }
+
+    .glyphicon .glyphicon-ok{
+      width: 20px;
+      height: 20px;
+      
+    }
+
+
+    #id_place_to_work{
+      color: black;
+      background-color: #efefef;
+      border: 1px solid black;
+    }
+
+    .form-control{
+      background-color: #efefef;
+    }
+
+  .settings_box{
+    font-size: 18px;
+  }
+
+  .settings_box p{
+    font-size: 18px;
+  }
+
+
+    /* .squaredTwo */
+  .squaredTwo {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    margin: 20px auto;
+    background: #fcfff4;
+    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+    label {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      background: linear-gradient(top, #222 0%, #45484d 100%);
+      box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+      &:after {
+        content: '';
+        width: 9px;
+        height: 5px;
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        border: 3px solid #fcfff4;
+        border-top: none;
+        border-right: none;
+        background: transparent;
+        opacity: 0;
+        transform: rotate(-45deg);
+      }
+      &:hover::after {
+        opacity: 0.3;
+      }
+    }
+    input[type=checkbox] {
+      visibility: hidden;
+      &:checked + label:after {
+        opacity: 1;
+      }    
+    }
+  }
+
+
+  /* end .squaredTwo */
+
+    .checkbox-inline input .checkbox
+    {
+      /* your checkbox styling */
+    }
+
+
+    @media screen and (min-width: 320px) and (max-width: 414px){
+      #DomicileForm{
+        height: 160px;
+        display: block;
+        font-size: 14px;
+      }
+
+      #id_place_to_work{
+        width: 114px;
+        font-size: 12px;
+      }
+
+      .phone-region h2{
+        font-size: 14px;
+      }
+
+      .inside .row{
+        padding-top: 0px;
+      }
+
+      .sec-select-professional{
+        height: 100%;
+      }
+
+      .settings_box{
+        font-size: 14px;
+        line-height: 22px;
+      }
+
+      .settings_box p{
+        font-size: 14px;
+        line-height: 22px;
+      }
+    }
+
+    .bootstrap-timepicker-widget.dropdown-menu.open{
+      width: 100px;
+    }
+
+
+    .time{
+      background-color: #efefef;
+      width: 100px;
+      position: relative;
+      margin: auto;
+      height: 32px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    }
+
+
+    .work-zone{
+      padding: 10px;
+      background: #efefef;
+      border-radius: 10px;
+      margin: 10px;
+      text-align: center;
+    }
+  </style>
+
+  <link href="{% static 'css/bootstrap-datepicker.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap-timepicker.min.css'%}" rel="stylesheet"/>
+  <section class="sec-presentation">
+    <div class="inside">
+      <div class="row">
+        <div class="row" style="margin-top: 50px;">
+          <div class="col-sm-6">
+            <img class="img-profile" src="{% if user.photo %}{{user.photo.url}}{% else %}{% static 
+          'images/silhouette.png' %}{% endif %}"/>
+          </div>
+          <div class="col-sm-6">
+            <div class="float-title"><p >Olá, <strong>{{user.first_name}} {{user.last_name}}</strong></p></div>
+            <div class="float-subtitle"><p>Matenha seus dados atualizados.</p></div>
+          </div>
+        </div>
+          <div class="img-request">
+            <p><strong>Selecione imagem até 1 Mb.</strong></p>
+          </div>
+          <form action="{% url 'core:settings' %}" method="post" enctype="multipart/form-data" name="myForm">
+           {% csrf_token %}
+           <div id="send_img" onclick="getFile()">Alterar imagem</div>
+           <!-- this is your file input tag, so i hide it!-->
+           <!-- i used the onchange event to fire the form submission-->
+           <input id="id_docfile" name="docfile" type="file" style="visibility: hidden;" onchange="sub(this)"/>
+           <!-- here you can have file submit button or you can write a simple script to upload the file automatically-->
+           <!-- <input type="submit" value='submit' > -->
+         </form>
+         <div class="row">
+          <h2>Cadastro de endereços</h2>
+          <a class="add_address" href="{%url 'core:place-list' %}">Adicionar/Editar endereços</a>
+        </div>
+       </div>
+    </div>
+  </section>
+  <section class="sec-address">
+    <div class="background-address">
+      <div class="inside" >
+        {% if places%}
+        {% for place in places %}
+        <div class="places-wrap" >
+          <div class="row">
+            <div class="col-sm-12">
+              <h2>{{ place.label }}</h2>
+              <h3>{{ place.full_address }}</h3>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h3 style="padding: 30px;">Você não possui endereços cadastrados. :)</h3>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  <section class="sec-phone">
+    <div class="inside">
+      <div class="row">
+        <h2>Cadastro de Telefones</h2>
+        <a class="add_address" href="{%url 'core:phone-list' %}">Adicionar/Editar telefones</a>
+      </div> <!--- row -->
+    </div>
+  </section>
+  <div class="phone-region">
+      <div class="background-phone">
+        <div class="inside">
+            {% if phones%}
+            {% for phone in phones %}
+            <div class="places-wrap">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2>{{ phone.number }}</h2>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h3 style="padding: 30px;">Você não possui telefones cadastrados. :)</h3>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+    <!-- ###########   Removed from Worker  ############### -->
+    {% if user.is_worker %}
+
+  <!-- Section Availability -->
+    <section class="sec-availability">
+      <table class="availability-header">
+        <tr>
+          <th colspan="4">DISPONIBILIDADE SEMANAL</th>
+        </tr>
+      </table>
+      <form method="post">
+        {% csrf_token %}
+        <div class="background-table">
+          <table class="availability-table">
+            <tr>
+              <td>Indisponível <input type="checkbox" id="away_monday" name="work_day" ></td>
+              <td style="text-align: left; padding-left: 10px">Segunda-Feira</td>
+              <td>
+                <input type="text" id="start_monday" name="start_monday" class="time">
+              </td>
+              <td>às</td>
+              <td>
+                <input type="text" id="end_monday" name="end_monday" class="time">
+              </td>
+            </tr>
+            <tr>
+              <td>Indisponível <input type="checkbox" id="away_tuesday"  name="work_day" ></td>
+              <td style="text-align: left; padding-left: 10px">Terça-Feira</td>
+              <td>
+                <input type="text" id="start_tuesday" name="start_tuesday" class="time">
+              </td>
+              <td>às</td>
+              <td>
+                <input type="text" id="end_tuesday" name="end_tuesday" class="time">
+              </td>
+            </tr>
+            <tr>
+              <td>Indisponível <input type="checkbox" id="away_wednesday"  name="work_day" ></td>
+              <td style="text-align: left; padding-left: 10px">Quarta-Feira</td>
+              <td><input type="text" id="start_wednesday" name="start_wednesday" class="time"></td>
+              <td>às</td>
+              <td><input type="text" id="end_wednesday" name="end_wednesday" class="time"></td>
+            </tr>
+            <tr>
+              <td>Indisponível <input type="checkbox" id="away_thursday" name="work_day" ></td>
+              <td style="text-align: left; padding-left: 10px">Quinta-Feira</td>
+              <td><input type="text" id="start_thursday" name="start_thursday" class="time"></td>
+              <td>às</td>
+              <td><input type="text" id="end_thursday" name="end_thursday" class="time"></td>
+            </tr>
+            <tr>
+              <td>Indisponível <input type="checkbox" id="away_friday" name="work_day" ></td>
+              <td style="text-align: left; padding-left: 10px">Sexta-Feira</td>
+              <td><input type="text" id="start_friday" name="start_friday" class="time"></td>
+              <td>às</td>
+              <td><input type="text" id="end_friday" name="end_friday" class="time"></td>
+            </tr>
+            <tr>
+              <td>Indisponível <input type="checkbox" id="away_saturday" name="work_day" ></td>
+              <td style="text-align: left; padding-left: 10px">Sábado</td>
+              <td><input type="text" id="start_saturday" name="start_saturday" class="time"></td>
+              <td>às</td>
+              <td><input type="text" id="end_saturday" name="end_saturday" class="time"></td>
+            </tr>
+            <tr>
+              <td>Indisponível <input type="checkbox" id="away_sunday" name="work_day" ></td>
+              <td style="text-align: left; padding-left: 10px">Domingo</td>
+              <td><input type="text" id="start_sunday" name="start_sunday" class="time"></td>
+              <td>às</td>
+              <td><input type="text" id="end_sunday" name="end_sunday" class="time"></td>
+            </tr>
+          </table>
+        </div>
+        <!--<p>*Caso o horário fique  em branco o dia ficará como indisponível.</p>-->
+        <div class="inside"><input class="settings_button" type="submit" value="Salvar" /></div>
+      </form>
+    </section>
+  <section id="sec-domicile" class="sec-domicile">
+    <div class="row">
+      <div class="inside">
+        <h2>Delivery</h2>
+      </div>
+    </div>
+    <div class="background-address">
+      <div class="inside">
+        <form id="DomicileForm" action="#sec-domicile" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="validate" value="true">
+          <div class="col-sm-4">
+          {% if user.attendance_in_domicile %}
+            <input type="checkbox" id="att_dom" name="attendance_in_domicile" checked> Residência.
+          {% else %}
+            <input type="checkbox" id="att_dom" name="attendance_in_domicile"> Residência.
+          {% endif %}
+          </div>
+          <div class="col-sm-8">
+          {% if user.costumer_service %}
+            
+              <input type="checkbox" id="cos_ser" name="costumer_service" checked> Estabelecimento.
+            
+              <input type="text" id="id_place_to_work" placeholder="Infome o Estabelecimento" name="place_to_work" value="{{user.place_to_work}}">
+
+              <button class="buttonOk" type="submit" style="visibility: visible;"><span class="glyphicon glyphicon-ok"></span></button>
+            
+          {% else %}
+            <input type="checkbox" id="cos_ser" name="costumer_service"> Estabelecimento.
+          {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+  <section id="sec-select-professional" class="sec-select-professional">
+    <div class="inside">
+        <div class="row">
+        <form action="" method="post">
+          {% csrf_token %}
+          <h2><label for="{{ formCategories.category.id_for_label }}">{{formCategories.category.label}}</label></h2>
+          <div class="settings_box">
+            <p>
+              {% for c in categoriesSet %}
+              <strong>{{c.0}} </strong>
+              <a href="{%url 'core:remove_profession' c.1 %}" style="top: 3px; color: #4e2e81;" class="glyphicon glyphicon-remove" onclick="return confirm('Tem certeza que deseja excluir?');"></a>
+              {% endfor %}
+            </p>
+            {{formCategories.category}}
+          </div>
+          <h2>Diferenciais</h2>
+          <div class="settings_box">
+            <div id="skills">Para selecionar seus diferenciais, escolha uma profissão.
+              {% for s in user_skills %}
+                <label class="checkbox-inline">
+                  <input type="checkbox" id='{{s.id}}' value="{{s.id}}" name="skills" checked> {{s.description}}
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+          <input class="settings_button" type="submit" value="Salvar" />
+        </form>
+        <hr>
+      </div> <!-- row -->
+    </div>
+  </section>
+
+  <section id="sec-workzone" class="sec-workzone">
+    <div class="inside">
+    <h2>Regiões de atendimento</h2>
+    <form id="workzone-form" action="#sec-workzone" method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <h3 style="color: #000000">Zona</h3>
+          <select class="required form-control" form="workzone-form" name="select-zone" id="select-zone">
+            <option value="0">Escolha uma zona....</option>
+            {% for z in workzones %}
+              <option value="{{ forloop.counter }}">{{z}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-sm-6">
+          <h3 style="color: #000000">Bairro</h3>
+          <select class="required form-control" name="select-neighborhood" form="workzone-form" id="select-neighborhood">
+            
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        {% for zone in user_work_zone %}
+            <div class="work-zone col-sm-3">
+              {{zone.neighborhood}}
+              <a href="{%url 'core:remove_workzone' zone.id %}" style="top: 3px; color: #4e2e81;" class="glyphicon glyphicon-remove" onclick="return confirm('Tem certeza que deseja excluir?');"></a>
+            </div>
+        {% endfor %}
+      </div>
+      <input class="settings_button" style="margin-bottom: 20px" type="submit" value="Adicionar" />
+    </form>
+    <!-- ################################################# -->
+    </div>
+  </section>
+
+
+  {% if categoriesSet|length > 0 %}
+  <section id="sec-services" class="sec-services">
+    <div class="inside">
+    <h2>Lista de serviço</h2>
+    <form id="services-form" action="#sec-services" method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <h3 style="color: #000000">Serviços oferecidos</h3>
+          {{formService.service_type}}
+          {{formService.service_type.errors}}
+        </div>
+        <div class="form-group col-sm-6">
+          <h3 style="color: #000000">Tempo de Duração(min)</h3>
+          {{formService.duration}}
+          {{formService.duration.errors}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <h3 style="color: #000000">Valor fixo?</h3>
+          {{formService.fixed_price}}
+        </div>
+        <div class="form-group col-sm-6">
+          <h3 style="color: #000000">Valor</h3>
+          {{formService.price}}
+          {{formService.price.errors}}
+        </div>
+      </div>
+      <input class="settings_button" style="margin-bottom: 20px" type="submit" value="Adicionar" />
+    </form>
+    
+    {% if service_provided_list %}
+    <div class="settings_box">
+      {% for service in service_provided_list %}
+      <div class="row">
+        <div class="col-sm-3">
+          {{service.service_type.description}}
+        </div>
+        <div class="col-sm-3">
+          Tempo de duração
+          {{service.duration}} min
+        </div>
+        <div class="col-sm-3">
+          {% if service.fixed_price%}
+            Valor R$ {{service.price}}
+          {% else %}
+            A partir de R$ {{service.price}}
+          {% endif %}
+        </div>
+        <div class="col-sm-1">
+          <a href="{%url 'core:remove_service_provide' service.id %}" style="top: 3px; color: #4e2e81;" class="glyphicon glyphicon-remove" onclick="return confirm('Tem certeza que deseja excluir?');"></a>
+        </div>
+      </div> <!-- row service-->
+      <hr>
+      {% endfor %}
+    </div>
+    {%endif%}
+    <!-- ################################################# -->
+    </div>
+  </section>
+  {% endif %}
+  {% endif %}
+
+  {% block jsBlock %}
+  <script src="{% static 'js/bootstrap-datepicker.min.js'%}"></script>
+  <script src="{% static 'locales/bootstrap-datepicker.pt-BR.min.js'%}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+  <script type="text/javascript"> 
+
+  var worker_neighborhoods = {};
+  var worker_zones_id = {};
+  
+  {% for key, value in workneighborhoods.items %}
+      worker_neighborhoods['{{key}}'] = '{{value}}';
+  {% endfor %}
+
+  {% for key, value in workzonesid.items %}
+      worker_zones_id['{{key}}'] = '{{value}}'
+  {% endfor %}
+
+
+  $('#select-zone').change(function(){
+    var zone = $('#select-zone option:selected').text();
+
+    var data = "";
+    for (key in worker_neighborhoods) {
+      if (worker_neighborhoods[key] == zone) {
+        data += "<option value='" + worker_zones_id[key] + "'>" + key + "</option>";
+      }      
+    }
+    
+    $('#select-neighborhood').html(data);
+  });
+    
+    $('#away_monday').change(function() {
+      if (this.checked) {
+        console.log("Changed");
+        $('#start_monday').css("visibility", "hidden");
+        $('#end_monday').css("visibility", "hidden");
+        $('#start_monday').val("1:00 AM");
+        $('#end_monday').val("1:00 AM");
+      }else{
+        console.log("Unchecked");
+        $('#start_monday').css("visibility", "visible");
+        $('#end_monday').css("visibility", "visible");
+        $('#start_monday').val("7:00 AM");
+        $('#end_monday').val("6:00 PM");
+      }
+    });
+    $('#away_tuesday').change(function() {
+      if (this.checked) {
+        console.log("Changed");
+        $('#start_tuesday').css("visibility", "hidden");
+        $('#end_tuesday').css("visibility", "hidden");
+        $('#start_tuesday').val("1:00 AM");
+        $('#end_tuesday').val("1:00 AM");
+      }else{
+        console.log("Unchecked");
+        $('#start_tuesday').css("visibility", "visible");
+        $('#end_tuesday').css("visibility", "visible");
+        $('#start_tuesday').val("7:00 AM");
+        $('#end_tuesday').val("6:00 PM");
+      }
+    });
+    $('#away_wednesday').change(function() {
+      if (this.checked) {
+        console.log("Changed");
+        $('#start_wednesday').css("visibility", "hidden");
+        $('#end_wednesday').css("visibility", "hidden");
+        $('#start_wednesday').val("1:00 AM");
+        $('#end_wednesday').val("1:00 AM");
+      }else{
+        console.log("Unchecked");
+        $('#start_wednesday').css("visibility", "visible");
+        $('#end_wednesday').css("visibility", "visible");
+        $('#start_wednesday').val("7:00 AM");
+        $('#end_wednesday').val("6:00 PM");
+      }
+    });
+    $('#away_thursday').change(function() {
+      if (this.checked) {
+        console.log("Changed");
+        $('#start_thursday').css("visibility", "hidden");
+        $('#end_thursday').css("visibility", "hidden");
+        $('#start_thursday').val("1:00 AM");
+        $('#end_thursday').val("1:00 AM");
+      }else{
+        console.log("Unchecked");
+        $('#start_thursday').css("visibility", "visible");
+        $('#end_thursday').css("visibility", "visible");
+        $('#start_thursday').val("7:00 AM");
+        $('#end_thursday').val("6:00 PM");
+      }
+    });
+    $('#away_friday').change(function() {
+      if (this.checked) {
+        console.log("Changed");
+        $('#start_friday').css("visibility", "hidden");
+        $('#start_friday').val("1:00 AM");
+        $('#end_friday').val("1:00 AM");
+        $('#end_friday').css("visibility", "hidden");
+      }else{
+        console.log("Unchecked");
+        $('#start_friday').css("visibility", "visible");
+        $('#end_friday').css("visibility", "visible");
+        $('#start_friday').val("7:00 AM");
+        $('#end_friday').val("6:00 PM");
+      }
+    });
+    $('#away_saturday').change(function() {
+      if (this.checked) {
+        console.log("Changed");
+        $('#start_saturday').css("visibility", "hidden");
+        $('#end_saturday').css("visibility", "hidden");
+        $('#start_saturday').val("1:00 AM");
+        $('#end_saturday').val("1:00 AM");
+      }else{
+        console.log("Unchecked");
+        $('#start_saturday').css("visibility", "visible");
+        $('#end_saturday').css("visibility", "visible");
+        $('#start_saturday').val("7:00 AM");
+        $('#end_saturday').val("6:00 PM");
+      }
+    });
+
+    $('#away_sunday').change(function() {
+      if (this.checked) {
+        console.log("Changed");
+        $('#start_sunday').css("visibility", "hidden");
+        $('#end_sunday').css("visibility", "hidden");
+        $('#start_sunday').val("1:00 AM");
+        $('#end_sunday').val("1:00 AM");
+      }else{
+        console.log("Unchecked");
+        $('#start_sunday').css("visibility", "visible");
+        $('#end_sunday').css("visibility", "visible");
+        $('#start_sunday').val("7:00 AM");
+        $('#end_sunday').val("6:00 PM");
+      }
+    });
+
+      $('#id_category').change(function() {
+        $.get('/usuario/skills/' + $(this).val(), function (data){
+          $("#skills").html (data);
+        });
+        console.log($(this).val());
+      //  alert( '/indico/skills/' + $(this).val());
+    });
+
+
+      $(function(){
+       $('#att_dom').on('change',function(){
+        $('#DomicileForm').submit();
+      });
+     });
+      $(function(){
+       $('#cos_ser').on('change',function(){
+        $('#DomicileForm').submit();
+      });
+     });
+
+
+      function getFile(){
+       document.getElementById("id_docfile").click();
+     }
+     function sub(obj){
+      var file = obj.value;
+      var fileName = file.split("\\");
+      document.getElementById("send_img").innerHTML = fileName[fileName.length-1];
+      document.myForm.submit();
+      event.preventDefault();
+    }
+
+    var array = "{{user.week_availability}}".split("|");
+    if (array == "") {
+      array = [ "7:00 AM", "6:00 PM","7:00 AM", "6:00 PM","7:00 AM", "6:00 PM","7:00 AM", "6:00 PM","7:00 AM", "6:00 PM","7:00 AM", "6:00 PM","7:00 AM", "6:00 PM"]
+    }
+
+    var away_array = [
+        '#away_monday',
+        '#away_tuesday',
+        '#away_wednesday',
+        '#away_thursday',
+        '#away_friday',
+        '#away_saturday',
+        '#away_sunday'
+    ]
+
+    var week_days = [
+      '#start_monday', '#end_monday',
+      '#start_tuesday', '#end_tuesday',
+      '#start_wednesday', '#end_wednesday',
+      '#start_thursday', '#end_thursday',
+      '#start_friday', '#end_friday',
+      '#start_saturday', '#end_saturday',
+      '#start_sunday', '#end_sunday',
+    ]
+    console.log(week_days.length);
+    for (var i = 0; i < week_days.length; i++) {
+      $(week_days[i]).timepicker({
+          format: 'HH:mm',
+          pickDate: false,
+          defaultTime: array[i],
+          pickSeconds: false,
+          pick12HourFormat: false            
+      });
+      console.log(array[i]);
+      if (array[i] == "1:00 AM") {
+        console.log(array[i]);
+        $(week_days[i]).css('visibility', 'hidden');
+        console.log("Valor de " + i + " % 2 = " + i%2);
+        if (i % 2 == 0) {
+          $(away_array[i/2]).prop('checked', true);
+        }
+      }
+    }
+    </script>
+
+  {% endblock %}
+{% endblock %}
+
+
+
+

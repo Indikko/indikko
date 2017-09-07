@@ -1,0 +1,61 @@
+{% block details%}
+<h1 class="subtitle">AVALIAÇÃO DO TRABALHADOR</h1>
+<div class="col-sm-12 line-div"></div>
+<div class="request-detail">
+    <form method="post" class="form-indico" id="evaluation-form" action="evaluate_worker/">{% csrf_token %}
+        <div>
+            {% for erro in form.erros %}
+            {{ erro }}
+            {% endfor %}
+        </div>
+        <div align="center">
+            <input type="hidden" name="service" value="{{service.id}}">
+            <input type="hidden" name="hirer" value="{{service.owner.id}}">
+            <input type="hidden" name="worker" value="{{service.professional.id}}">
+            <caption id="request-id">CÓDIGO DA SOLICITAÇÃO: <span id="request-cod">{{ service.id }}</span></caption>
+            <div class="profissional-avatar">
+                <img src="{% if service.professional.photo %}{{service.professional.photo.url}}{% else %}https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png{% endif %}" />
+            </div>
+            <span>{{service.professional.first_name}}&nbsp;{{service.professional.last_name}}</span>
+            <br/>
+            <br/>
+            <div>
+                <div class="form-radio-group" align="left">
+                    <label for="{{ form.punctuality.id_for_label }}">{{form.punctuality.label}}</label>
+                    <br/>
+                    {{form.punctuality}}
+                    <p class="help-block">{{form.punctuality.help_text}}</p>
+                </div>
+                <div class="form-radio-group" align="left">
+                    <label for="{{ form.quality.id_for_label }}">{{form.quality.label}}</label>
+                    <br/>
+                    {{form.quality}}
+                    <p class="help-block">{{form.quality.help_text}}</p>
+                </div>
+                <div class="form-radio-group" align="left">
+                    <label for="{{ form.trust.id_for_label }}">{{form.trust.label}}</label>
+                    <br/>
+                    {{form.trust}}
+                    <p class="help-block">{{form.trust.help_text}}</p>
+                </div>
+                <div class="form-radio-group" align="left">
+                    <label for="{{ form.cost_benefit.id_for_label }}">{{form.cost_benefit.label}}</label>
+                    <br/>
+                    {{form.cost_benefit}}
+                    <p class="help-block">{{form.cost_benefit.help_text}}</p>
+                </div>
+            </div>
+            <br/>
+            <div>
+                <p>VOCÊ INDICA OU NÃO INDICA O PROFISSIONAL?</p>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-radius btn-recusar" form="evaluation-form" type="submit" value="False" name="indicate">NÃO INDICO</button>
+            <button class="btn btn-radius pull-right" form="evaluation-form" type="submit" value="True" name="indicate">INDICO</button>
+            <br />
+            <br />
+        </div>
+    </form>
+</div>
+{% endblock %}

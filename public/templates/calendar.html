@@ -1,0 +1,29 @@
+<div class="header">
+    <i class="fa fa-angle-left" ng-click="previous()"></i>
+    <span>
+    {%verbatim%}
+        {{month.format("MMMM")}}
+    {%endverbatim%}
+    
+    </span>
+    <i class="fa fa-angle-right" ng-click="next()"></i>
+</div>
+<div class="week names">
+    <span class="day">DOM</span>
+    <span class="day">SEG</span>
+    <span class="day">TER</span>
+    <span class="day">QUA</span>
+    <span class="day">QUI</span>
+    <span class="day">SEX</span>
+    <span class="day">SAB</span>
+</div>
+<div class="week" ng-repeat="week in weeks">
+    <span class="day" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }" ng-click="select(day)" ng-repeat="day in week.days" style="position: relative;">
+        <div class="element svg" style="width: 8px; height: 8px; opacity: 1;position: absolute;right: 21%;top: -25%;" ng-show="hasSchedule(day.date)">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 500" enable-background="new 0 0 500 500" xml:space="preserve" class="baseColors">
+                <g><circle fill="#b760e6" cx="250" cy="250" r="250" class="color color-1 primaryColor" data-color="#FFFFFF"></circle></g>
+            </svg>
+        </div>
+        {%verbatim%}{{day.number}}{%endverbatim%}
+    </span>
+</div>

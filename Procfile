@@ -1,0 +1,1 @@
+web: gunicorn indico.wsgi --log-file -

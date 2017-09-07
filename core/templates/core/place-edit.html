@@ -1,0 +1,195 @@
+{% extends "core/base.html" %}
+{% block title %}Indikko - Endereços{% endblock %}
+
+{% block content %}
+{% load app_extras %}
+<style type="text/css">
+    ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #909;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color:    #909;
+       opacity:  1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color:    #909;
+       opacity:  1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color:    #909;
+    }
+
+    .container p{
+        color: red;
+        font-family: robotoLight;
+        font-size: 10px;
+    }
+</style>
+
+<section id="servicerequest" class="no-margin">
+  <div class="container">
+      <h3>INFORMAÇÕES DO ENDEREÇO</h3>
+      {{ form.non_field_errors }}
+      <form method="POST" class="form-indico">
+      <div class="col-md-6">
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="row">
+                {{ form.label.errors }}
+                <div class="col-sm-3">
+                    <label for="{{ form.nome.id_for_label }}">Identificador</label>
+                </div>
+                <div class="col-sm-4">
+                    {{ form.label | placeholdermd:'Ex: Minha casa, Trabalho' }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                {{ form.zipcode.errors }}
+                <div class="col-sm-3">
+                    <label for="{{ form.zipcode.id_for_label }}">CEP</label>
+                </div>
+                <div class="col-sm-3">
+                    {{ form.zipcode }}
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-8">
+                    <p class="cep">*O CEP preenche seu endereço automaticamente.</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">
+                    {{ form.street.errors }}
+                    <label for="{{ form.street.id_for_label }}">Rua</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ form.street }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-3">
+                    {{ form.number.errors }}
+                    <label for="{{ form.number.id_for_label }}">Número</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ form.number }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+            <div class="col-sm-3">
+            {{ form.complement.errors }}
+            <label for="{{ form.complement.id_for_label }}">Complemento</label>
+            </div>
+                <div class="col-sm-8">
+            {{ form.complement }}
+            </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+            <div class="col-sm-3">
+            {{ form.state.errors }}
+            <label for="{{ form.state.id_for_label }}">Estado</label>
+            </div>
+                <div class="col-sm-8">
+            {{ form.state }}
+            </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+            <div class="col-sm-3">
+            {{ form.city.errors }}
+            <label for="{{ form.city.id_for_label }}">Cidade</label>
+            </div>
+                <div class="col-sm-8">
+            {{ form.city }}
+            </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+            <div class="col-sm-3">
+            {{ form.neighborhood.errors }}
+            <label for="{{ form.neighborhood.id_for_label }}">Bairro</label>
+            </div>
+                <div class="col-sm-8">
+            {{ form.neighborhood }}
+            </div>
+            </div>
+        </div>
+        <div class="form-group">
+        <div class="row">
+            <div class="col-sm-3">
+            <label for="{{ form.show_on_map.id_for_label }}">Colocar no mapa?</label>
+            </div>
+                <div class="col-sm-8">
+            {{ form.show_on_map }}
+            </div>
+            </div>
+        </div>
+        <input type="submit" value="Salvar" class="btn btn-radius pull-right"/>
+          </div>
+      </form>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsBlock %}
+<script type="text/javascript">
+
+function callback_cep(content) {
+        if (!("erro" in content)) {
+            document.getElementById('id_street').value=(content.logradouro);
+            document.getElementById('id_neighborhood').value=(content.bairro);
+            document.getElementById('id_city').value=(content.localidade);
+            document.getElementById('id_state').value=(content.uf);
+        }
+        else {
+            alert("CEP não encontrado.");
+        }
+    }
+
+
+
+function find_cep(value) {
+    var cep = value.replace(/\D/g, '');
+
+    if (cep != "") {
+        var check_cep = /^[0-9]{8}$/;
+
+        if(check_cep.test(cep)) {
+                document.getElementById('id_street').value="...";
+                document.getElementById('id_neighborhood').value="...";
+                document.getElementById('id_city').value="...";
+                document.getElementById('id_state').value="...";
+
+                //Cria um elemento javascript.
+                var script = document.createElement('script');
+
+                //Sincroniza com o callback.
+                script.src = '//viacep.com.br/ws/'+ cep + '/json/?callback=callback_cep';
+
+                //Insere script no documento e carrega o conteúdo.
+                document.body.appendChild(script);
+        }
+        else {
+            alert("Formato de CEP inválido.");
+        }
+    }
+}
+
+</script>
+
+{% endblock %}

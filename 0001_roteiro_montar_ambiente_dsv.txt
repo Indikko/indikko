@@ -1,0 +1,86 @@
+IndicoApp
+==================================================
+- Procedimento para Ambiente de Desenvolvimento
+
+1) Checkout no BitBucket
+   $ git clone https://ramayana@bitbucket.org/ramayana/indico-web.git
+   $ cd indico-web
+
+2) Criar perfil do VirtualEnv
+   $ virtualenv --no-site-packages --distribute -p /usr/bin/python3 ~/.virtualenvs/indicoPy3
+
+3) Configurar as libs e dependencias do ambiente virtual
+   (IndicoPy3)$ pip install -r requirements.txt
+
+4) Autenticar com o usuário do HEROKU via aplicativo ToolBelt
+   (IndicoPy3)$ heroku login
+
+5) Criar arquivo .env para a carga de variáveis de ambiente na execução de 'heroku local'
+   (IndicoPy3)$ heroku config:get AWS_ACCESS_KEY_ID -s  >> .env
+   (IndicoPy3)$ heroku config:get AWS_SECRET_ACCESS_KEY -s  >> .env
+   (IndicoPy3)$ heroku config:get S3_BUCKET_NAME -s  >> .env
+   (IndicoPy3)$ heroku config:get DATABASE_URL -s  >> .env
+
+6) Edite a variável DATABASE_URL no arquivo .env para refletir a conexão com PostgreSQL local
+   DATABASE_URL='postgres://postgres:postgres@localhost:5432/indico'
+
+7) Configurar as variáveis de ambiente no bash para a execução dos comandos diretos no "python/manage.py"
+   (IndicoPy3)$ export AWS_ACCESS_KEY_ID='AKIAIMJ2SRPLANZCNFTA'
+   (IndicoPy3)$ export AWS_SECRET_ACCESS_KEY='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'
+   (IndicoPy3)$ export S3_BUCKET_NAME='indicoapp'
+   (IndicoPy3)$ export DATABASE_URL=postgres://postgres:postgres@localhost:5432/indico
+
+8) Executar o coletor de arquivos estáticos para ambiente de desenvolvimento
+   (IndicoPy3)$ python manage.py collectstatic
+
+9) Executar os comandos de configuração do banco de dados
+   (IndicoPy3)$ python manage.py makemigrations
+   (IndicoPy3)$ python manage.py migrate
+
+-----------------------------------------------
+Atualizado em 28/12/16
+===============================================
+Quando há falha nos migrations: core_indicouser
+===============================================
+Executar a seguinte sequencia:
+1 - Migrations em CORE
+2 - Migrate em SITES
+3 - Migrate em CORE
+4 - Migrate em OAUTH2_PROVIDER
+5 - Migrate em CONTENTTYPES
+6 - Migrate geral
+-----------------------------------------------
+
+10) Zerar base de dados
+   (IndicoPy3)$ python manage.py flush
+
+10) Criar um superusuario
+   (IndicoPy3)$ python manage.py createsuperuser --emal indico@ramayana.eti.br
+
+   Obs.: Este é e-mail será utilizado para a criação do Super Usuário e tambem
+         receberá o redirecionamento para os e-mails dos usuários fictícios abaixo
+         relacionados:
+
+         - stella_isabelle
+         - jennifer_rayssa
+         - henry_matheus
+         - pedro_bruno
+         - gabrielly_mendes
+         - eduarda_beatriz
+         - erick_danilo
+         - bernardo_felipe
+         - ricardo_nicolas
+         - yuri_murilo
+         - giovanni_francisco
+         - theo_thiago
+
+         (Todos acima são do domínio @ramayana.eti.br)
+
+=============================================================================================================
+
+Obs.: 
+
+- Restore de backup no ambiente local:
+$ pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d indico bkp_postgres/latest.dump
+- Executa dump no ambiente local
+$ pg_dump -v -F c -h localhost -U postgres -d indico > bkp_postgres/latest_rama.dump

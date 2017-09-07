@@ -1,0 +1,88 @@
+{% block details%}
+{% csrf_token %}
+{% load worker_filters %}
+<h1 class="subtitle">DETALHES DA SOLICITAÇÃO</h1>
+<div class="col-sm-12 line-div"></div>
+<div class="request-detail">
+    <form method="post" class="form-indico" id="service-form" action="set_service_status/">{% csrf_token %}
+    <div>
+        {% for erro in form.erros %}
+        {{ erro }}
+        {% endfor %}
+    </div>
+    <div class="request-detail">
+            <table id="request-detail" class="table">
+                <caption id="request-id">CÓDIGO DA SOLICITAÇÃO <span id="request-cod">{{ service.id }}</span></caption>
+                <input type="hidden" name="id" value="{{service.id}}">
+                <tbody>
+                <tr class="header">
+                    <td>SOLICITANTE</td> <td>TELEFONE</td> <td>PAGAMENTO</td>
+                </tr>
+                <tr class="owner">
+                    <td id="requester-name">{{service.owner.first_name}}&nbsp;{{service.owner.last_name}}</td>
+                    <td id="requester-name">{{service.owner.phone_number}}</td>
+                    <td id="requester-paymode">{{service.get_payment_preference_display}}</td>
+                </tr>
+                <tr class="header">
+                    <td>ENDEREÇO</td>
+                </tr>
+                <tr class="owner">
+                    <td id="requester-address">{{service.address}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table id="service-list"  class="table">
+                <tbody>
+                <tr class="service-tags">
+                    <th>SERVIÇO</th> <th>DATA</th> <th>HORA</th> <th>VALOR</th>
+                </tr>
+                <tr class="service-detail">
+                    <td>{{ service.service_provided.service_type.description }}</td> <td>{{ form.date.value }}</td> <td>{{ form.time.value }}</td> <td>R$ {{ form.price.value }}</td>
+                </tr>
+                <tr class="service-total">
+                    <td colspan="3">TOTAL</td><td>R$ {{ form.price.value }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table id="place-detail"  class="table">
+                <caption>DETALHES</caption>
+                <tbody>
+                <tr class="service-detail">
+                    <td>{{ evaitems | get_service_details_string}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table id="more-info"  class="table">
+                <caption>OUTRAS INFORMAÇÕES</caption>
+                <tbody>
+                <tr class="service-detail">
+                    <td>{{ form.more_info.value }}</td>
+                </tr>
+                </tbody>
+            </table>
+    </div>
+    <div id="form-macabro">
+        {{ form }}
+    </div>
+    <div class="row">
+        {% if service.status == 0 %}
+        <input class="btn btn-radius btn-recusar" type="submit" value="REJEITAR" name="_reject">
+        <input class="btn btn-radius pull-right" type="submit" value="ACEITAR" name="_accept">
+        
+        {% endif %}
+        {% if service.status == 1 %}
+        <input class="btn btn-radius btn-recusar" type="submit" value="CANCELAR" name="_cancel">
+        <input class="btn btn-radius pull-right" type="submit" value="INICIAR TRABALHO" name="_start">
+        <br />
+        <br />
+        {% endif %}
+        {% if service.status == 5 %}
+        <input class="btn btn-radius btn-recusar" type="submit" value="CANCELAR" name="_cancel">
+        <input class="btn btn-radius pull-right" type="submit" value="CONCLUIR TRABALHO" name="_done">
+        <br />
+        <br />
+        {% endif %}
+    </div>
+</form>
+</div>
+{% endblock %}

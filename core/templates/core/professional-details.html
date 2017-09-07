@@ -1,0 +1,984 @@
+{% extends "core/base.html" %}
+{% load staticfiles tz %}
+{% block title %}Indikko{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+<style type="text/css">
+
+  .sec-profile{
+    margin-top: 20px;
+  }
+    .div_unactive{
+        background-image: url("/static/images/chkBoxUnselectedPeq.png");
+        background-repeat: no-repeat;
+        padding-left: 23px;
+    }
+    .div_active{
+        background-image: url("/static/images/chkBoxSelectedPeq.png");
+        background-repeat: no-repeat;
+        padding-left: 23px;
+    }
+    
+    .ballon{
+      background: #fff;
+      padding: 13px 20px 13px 20px;
+      border: 1px solid black;
+      position: relative;
+      margin-left: 220px;
+      font-size: 14px;
+      line-height: 24px;
+      border-radius: 25px;
+       word-wrap: break-word;
+       margin-bottom: 10px;
+    }
+
+.triangle-left {
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-right: 20px solid #000;
+    position: relative;
+    top: -72px;
+    right: 41px;
+}
+
+.inner-triangle {
+    position: relative;
+    top: -20px;
+    left: 1px;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-right: 20px solid white;
+}
+
+.schedule-button{
+    background-color: #4d2e80;
+    color: white;
+    font-size: 12px;
+    margin-right: 10px;
+    padding: 5px 10px;
+}
+
+.price-tag{
+    left: 67.565%;
+    position: absolute;
+}
+
+
+.overlays {
+  visibility: hidden;
+  position: absolute;
+  color: #979797;
+  text-align:center;
+  z-index: 100;
+}
+
+.professional-bar{
+   margin-left: 10px;
+   margin-right: 10px; 
+   width: 94%
+}
+
+
+.overlays .inside{
+  width: 190px;
+  background-color: #fff;
+  border:1px solid #000;
+  text-align:left;,
+
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.inside .row{
+    padding: 10px;
+    font-size: 22px;
+}
+
+.professional-box {
+    text-align: left;
+    font-family: robotoLight;
+    font-size: 36px;
+    color: black;
+}
+
+.professional-box a{
+    color: black;
+    }
+
+.professional-box p{
+    font-size: 24px;
+    line-height: 28px;
+    margin: 0px;
+}
+
+.professional-box .box-icons{
+    width: 60px;
+    height: 50px;
+}
+
+.professional-box .phone-icons{
+    width: 52px;
+    height: 52px;
+    margin-left: 15px;
+}
+
+.professional-box .row{
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+}
+
+
+.score{
+    float: right;
+  width: 120px;
+  height: 90px;
+    text-align: center;
+}
+
+.background-score span{
+    position: relative;
+    top: 35%;
+    left: 5%;
+    color: white;
+    font-weight: bold;
+    font-family: robotoMedium;
+    font-size: 40px;
+
+}
+
+.background-score{
+    background-color: #715899;   
+  width:100%;
+  height: 100%;
+  -webkit-clip-path: polygon(0 16%, 100% 0, 100% 84%, 0 100%);
+  clip-path: polygon(0 16%, 100% 0, 100% 84%, 0 100%);
+}
+
+#check_evaluation{
+    display: inline;
+}
+
+.profile-pic{
+    width: 250px;
+    height: 250px;
+    margin-right: 10px;
+    border: 1px solid black;
+}
+
+
+
+.filter{
+    float: left;
+    font-size: 24px;
+    margin-left: 13.5%;
+}
+.container-fluid{
+  margin-left:10px;
+}
+
+.service-provided, .service-provided p{
+    display: inline;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.differential{
+    overflow: hidden;
+    width:334px;
+    height:145px;
+}
+
+.service-provided hr{
+    margin: 0px;
+}
+
+.my-container .header{
+    font-weight: normal;
+    padding: 0px;
+}
+
+.my-container .content{
+    color: black;
+    padding: 0px;
+}
+
+.more-service-button{
+    background-color: #4d2e80;
+    color: white;
+    font-size: 18px;
+    margin-left: 32%;
+    padding: 10px 10px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.modal-dialog{
+    font-size: 18px;
+}
+
+.modal-dialog .col-sm-12{
+    margin-bottom: 5px;
+}
+
+.modal-body{
+    line-height: 26px;
+}
+
+.btn-default {
+    background-color: #4d2e80;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) and (min-width: 660px){
+
+    .price-tag{
+        left: 76.565%;
+        position: absolute;
+    }
+
+    .inside .row{
+        font-size: 22px;
+    }
+
+    .overlays .inside{
+        width: 190px;
+        padding: 10px;
+    }
+
+    .background-score span{
+        position: relative;
+        top: 35%;
+        left: 5%;
+        color: white;
+        font-weight: bold;
+        font-family: robotoMedium;
+        font-size: 40px;
+
+    }
+
+    .score{
+        float: right;
+        width: 120px;
+        height: 90px;
+        text-align: center;
+    }
+
+    .background-score{
+        background-color: #715899;   
+        width:100%;
+        height: 100%;
+        -webkit-clip-path: polygon(0 16%, 100% 0, 100% 84%, 0 100%);
+        clip-path: polygon(0 16%, 100% 0, 100% 84%, 0 100%);
+    }
+
+
+    .professional-box .phone-icons{
+        width: 52px;
+        height: 52px;
+    }
+
+    .filter{
+        font-size: 24px;
+        margin-left: 9.5%;
+    }
+
+    .differential{
+        height: 120px;
+
+    }
+
+    .professional-box .box-icons{
+        width: 60px;
+        height: 50px;
+        margin-top: 5px;
+    }
+
+    .service-provided{
+        font-size: 24px;
+    }
+
+    .professional-box {
+        font-size: 28px;
+    }
+
+    .professional-box p{
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    .profile-pic{
+        width: 226px;
+        height: 226px;
+    }
+}
+
+.service-table{
+  width: 100%;
+}
+
+.service-table th{
+  background: rgba(48,4,95,0.8);
+  color: white;
+  padding: 10px 15px; 
+  border-bottom: 1px solid black;
+}
+
+.service-table td{
+  padding: 20px 15px 10px 15px;
+  border: 1px solid black;
+}
+
+.evaluation-text{
+  border: 1px solid black;
+  padding: 13px 20px 13px 20px;
+  margin-left: 200px;
+  font-size: 14px;
+  line-height: 24px;
+  border-radius: 25px;
+   word-wrap: break-word;
+}
+
+.evaluation-score{
+  background: rgba(48,4,95,0.8);
+  width: 36px;
+  padding: 5px;
+  color: white;
+  text-align: center;
+  float: left;
+  margin-right: 10px;
+}
+
+.evaluation-name{
+  font-size: 18px;
+  width: 170px;
+  text-align: center;
+  top: -10px;
+  margin-bottom: 15px;
+}
+
+.evaluation-pic{
+    width: 170px;
+    height: 170px;
+    margin-top: 30px;
+    margin-right: 10px;
+    border: 1px solid black; 
+}
+
+.evaluator{
+  float: left;
+}
+
+@media screen and (min-width: 310px) and (max-width: 410px){
+
+  .ballon{
+        margin-left: 108px;
+    }
+
+
+  .profile-pic{
+    width: 120px;
+    height: 120px;
+  }
+
+  .professional-box a{
+    font-size: 14px;
+  }
+
+  .score{
+    width: 77px;
+    height: 44px;
+  }
+
+  .background-score span{
+    top: 7%;
+    font-size: 15px;
+  }
+
+  .professional-box .phone-icons{
+    width: 18px;
+    height: 18px;
+    margin-left: 0px;
+  }
+
+  .professional-box p{
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .differential{
+    width: 172px;
+    height: 61px;
+  }
+
+  .professional-box .box-icons{
+    width: 35px;
+    height: 30px;
+  }
+
+  img{
+    vertical-align: top;
+  }
+
+  .evaluation-name{
+    font-size: 12px;
+    width: 80px;
+  }
+  .evaluation-pic{
+    width: 80px;
+    height: 80px;
+    margin-top: 40px;
+  }
+
+  .evaluation-text{
+    margin-left: 90px;
+  }
+}
+
+@media screen and (max-width: 650px) and (min-width: 410px){
+
+  .ballon{
+        margin-left: 108px;
+    }
+
+
+    .price-tag{
+        left: 76.565%;
+        position: absolute;
+    }
+
+    .filter{
+        font-size: 14px;
+        margin-left: 9.8%;
+    }
+
+    .inside .row{
+        font-size: 16px;
+    }
+
+
+    .professional-box .box-icons{
+        width: 35px;
+        height: 32px;
+    }
+
+    .professional-box .phone-icons{
+        width: 32px;
+        height: 32px;
+    }
+
+    .professional-box{
+        font-size: 22px;
+
+    }
+
+    .professional-box p{
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .overlays .inside{
+        width: 140px;
+    }
+
+    .profile-pic{
+        width: 120px;
+        height: 120px;
+    }
+
+    .skills-text{
+        font-size: 12px;
+    }
+
+    .differential{
+        width: 190px;
+        height: 60px;
+    }
+
+    
+
+    .service-provided, .service-provided p{
+        display: inline;
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    .service-provided hr{
+        margin: 0px;
+    }
+
+    .my-container .header{
+        font-weight: normal;
+        padding: 0px;
+    }
+
+    .my-container .content{
+        color: black;
+        padding: 0px;
+    }
+
+    .more-service-button{
+        background-color: #4d2e80;
+        color: white;
+        font-size: 12px;
+        margin-left: 32%;
+        padding: 5px 10px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .evaluation-name{
+    font-size: 12px;
+    width: 80px;
+  }
+  .evaluation-pic{
+    width: 80px;
+    height: 80px;
+    margin-top: 40px;
+  }
+
+  .evaluation-text{
+    margin-left: 90px;
+  }
+}
+
+@media screen and (max-width: 400px) and (min-width: 350px){
+
+  .ballon{
+        margin-left: 108px;
+    }
+
+
+    .price-tag{
+        left: 76.565%;
+        position: absolute;
+    }
+
+    .filter{
+        font-size: 14px;
+        margin-left: 7.8%;
+    }
+
+    .inside .row{
+        font-size: 16px;
+    }
+
+
+    .score{
+        width: 80px;
+        height: 50px;
+    }
+
+    .background-score span{
+        top: 22%;
+        left: 8%;
+        font-size: 32px;
+
+    }
+
+
+    .differential{
+        width: 154px;
+        height: 57px;
+    }
+
+    .professional-box .box-icons{
+        width: 35px;
+        height: 32px;
+    }
+
+    .professional-box .phone-icons{
+        width: 32px;
+        height: 32px;
+    }
+
+    .professional-box{
+        font-size: 16px;
+    }
+
+    .professional-box p{
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .overlays .inside{
+        width: 140px;
+    }
+
+    .profile-pic{
+        width: 120px;
+        height: 120px;
+    }
+
+    .skills-text{
+        font-size: 12px;
+    }
+
+    
+
+    .service-provided, .service-provided p{
+        display: inline;
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    .service-provided hr{
+        margin: 0px;
+    }
+
+    .my-container .header{
+        font-weight: normal;
+        padding: 0px;
+    }
+
+    .my-container .content{
+        color: black;
+        padding: 0px;
+    }
+
+    .more-service-button{
+        background-color: #4d2e80;
+        color: white;
+        font-size: 12px;
+        margin-left: 32%;
+        padding: 5px 10px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+}
+
+</style>
+
+<section class="sec-profile">
+  <div class="row">
+    <div class="professional-box">
+      <div class="row">
+        <div class="score">
+          <div class="background-score">
+            <span><strong>{{worker.rate}}</strong></span>
+          </div>
+        </div>
+        <div ng-init="init('{{worker.id}}')"></div>
+        <a><img class="profile-pic ng-scope" style="float: left;" src="{% if worker.photo %}{{worker.photo.url}}{% else %}https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png{% endif %}"/></a>
+        <strong style="font-family: robotoMedium"><a>{{worker.get_full_name}}</a></strong>
+        <img class="phone-icons" data-toggle="popover" title="Telefone" data-content="{{worker.get_all_numbers}}" id="btn_like_{{worker.id}}" src="{% static 'images/layout/icon-fone.png' %}" style="cursor:pointer;" />
+        <p style="font-family: robotoMedium; padding-bottom: 10px;">{{worker.get_first_place}}</p>
+        {% if worker.attendance_in_domicile %}
+          <p>Delivery</p>
+        {% endif %}
+        {% if worker.costumer_service %}
+          <div>
+            {% if worker.place_to_work %}
+              <p>Atende no {{worker.place_to_work}}</p>
+            {% else %}
+              <p>Atendimento em estabelecimento</p>
+            {% endif %}
+          </div>
+        {% endif %}
+        <div style="margin-top: 0px">
+          <p class="differential">
+            {% for s in skills %}
+            <span class="skills-text">
+              <span>{{s}}</span><br>
+            </span>
+            {% endfor %}
+          </p>
+        </div>
+        <a href="#" data-toggle="modal" data-target="#rankModal_{{worker.id}}" show="worker.showFormForEvaluate">
+          <img id="btn_like_{{worker.id}}" class="box-icons" src="{% static 'images/icon-indicacoes.png' %}">
+        </a>
+                            <!-- Modal -->
+                    <div id="rankModal_{{worker.id}}" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Avaliando o Trabalhador {{worker.first_name}}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Pontualidade</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row lead">
+                                                    <div id="stars-punctuality_{{worker.id}}" class="starrr"></div>
+                                                    Você avaliou este item com <span ng-model="w.form.punctuality" id="count-stars-punctuality_{{worker.id}}">0</span> estrela(s)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Habilidade</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-hability_{{worker.id}}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-hability_{{worker.id}}">0</span> estrela(s)
+
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Profissionalismo</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-profissionality_{{worker.id}}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-profissionality_{{worker.id}}">0</span> estrela(s)
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Confiança</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-trust_{{worker.id}}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-trust_{{worker.id}}">0</span> estrela(s)
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Preço</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-cost_benefit_{{worker.id}}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-cost_benefit_{{worker.id}}">0</span> estrela(s)
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <strong>Marque a caixa se recomenda esse profissional</strong>
+                                                <input id="endorsement_{{worker.id}}" type="checkbox" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <strong>Comentários</strong>
+                        <textarea id="comments_{{worker.id}}" 
+                          ng-model="w.comments"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                <div class="modal-footer">
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-default" 
+                                        ng-disabled="!w.comments"
+                                        id="btn_send_rank_{{worker.id}}">Enviar</button>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-default" 
+                                        data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        {% for we in evaluations%}
+          <div id="check_evaluation" ng-if="w.id == {{we.worker.id}}">
+            {% if we.hirer.get_photo_url%}
+              <img class="box-icons" style="border: 1px solid black;" src="{{we.hirer.get_photo_url}}" />
+            {%else%}
+              <img class="box-icons" style="border: 1px solid black;" src="{%static 'images/silhouette.png'%}" />
+            {%endif%}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+</div>  
+</section>
+<section class="sec-address">
+  <div class="row">
+    {% if places %}
+  <h2>Endereços</h2>
+  <div id="map" style="height: 400px; width: 100%;"></div> 
+  {% endif %}
+  </div>
+</section>
+  <section class="sec-services">
+    <p>
+      {% if servicepro %}
+      <h2><strong>Serviços:</strong></h2>
+      <hr/>
+      <table class="service-table">
+        <tr>
+          <th>Serviços</th>
+          <th>Duração</th>
+          <th>Valor</th>
+        </tr>
+        {% for s in worker.get_serviceprovided %}
+        <tr>
+          <td>{{s.service_type.description}}</td>
+          <td>{{s.duration}} Minutos</td>
+          <td>R$ {{s.price}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
+    </p>
+  </section>
+  <section class="sec-evaluations">
+  <div class="row">
+      {% if evaluations %}
+      <h2><strong>Avaliações</strong></h2>
+      <hr/>
+      {% for e in evaluations %}
+      <div class="row">
+        <div class="evaluator">
+          <img class="evaluation-pic" style="float: left;" src="{% if e.hirer.photo %}{{e.hirer.photo.url}}{% else %}https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png{% endif %}" />
+          <div class="evaluation-name">{{e.hirer.get_full_name}}</div>
+        </div>
+        
+        <div class="ballon">
+          <div class="evaluation-score"><strong>{{e.partial_rate}}</strong></div>
+           <strong>{{e.testimonial}}</strong><br /><br />
+              <strong>Pontualidade:</strong> {{e.punctuality}}<br />
+              <strong>Qualidade:</strong> {{e.quality}}<br />
+              <strong>Confiança:</strong> {{e.trust}}<br />
+              <strong>Preço:</strong> {{e.cost_benefit}}<br />
+              <div class="triangle-left">
+                <div class="inner-triangle"></div>
+              </div>
+        </div>
+        
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+</section>
+{% endblock %}
+{% block jsBlock %}
+<!-- AngularJS -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/i18n/angular-locale_pt-br.js"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/indico.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/directives/onfinishrender.directive.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/starrr_indico.js' %}"></script>
+<script type="text/javascript">
+  
+$('[data-toggle="popover"]').popover();
+
+$(".starrr").starrr();
+    
+
+            $('[id^="stars-"]').on('starrr:change', function(e, value){
+                $('#count-'+e.currentTarget.id).html(value);
+            });
+
+            $("[id^='btn_send_rank_']").click(
+        function(e){
+                    console.log("clicked");
+                    var str_id = e.target.id;
+                    var idx = str_id.lastIndexOf("_");
+                    var worker_id = str_id.slice(idx+1);
+                    var evaluate_form = {};
+
+                    evaluate_form['punctuality']     = $('#count-stars-punctuality_'+worker_id).html();
+                    evaluate_form['quality']        = $('#count-stars-hability_'+worker_id).html();
+                    evaluate_form['trust']           = $('#count-stars-trust_'+worker_id).html();
+                    evaluate_form['cost_benefit']    = $('#count-stars-cost_benefit_'+worker_id).html();
+                    evaluate_form['endorsement']     = $('#endorsement_'+worker_id).is(':checked');
+                    evaluate_form['comments']        = $('#comments_'+worker_id).val();
+                    
+                    var r = confirm("Você confirma o envio desta avaliação?");
+                    if (r == true){
+                        $('#rankModal_'+worker_id).modal("hide");
+                        
+                        $.post(
+                            '/api/v1/workerevaluation/', {
+                                csrfmiddlewaretoken: '{{csrf_token}}',
+                                hirer: '{{user.id}}',
+                                worker: worker_id,
+                                punctuality: evaluate_form['punctuality'],
+                                quality: evaluate_form['quality'],
+                                trust: evaluate_form['trust'],
+                                cost_benefit: evaluate_form['cost_benefit'],
+                                recommend: evaluate_form['endorsement'],
+                                testimonial: evaluate_form['comments'],
+                                approved: false
+                        });
+                        //$scope.$apply();
+                        location.pathname = 'usuario/obrigado/';
+                    }
+            }
+        );
+
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: {lat: -3.0702, lng: -59.981}
+    });
+
+    var data = [];
+    var address = [];
+    var addressLabel = [];
+    var addressStreet = [];
+    var infoWindowContent = [];
+    var geocoder = new google.maps.Geocoder();
+    {% for p in places %}
+    {% if p.show_on_map %}
+    address.push("{{p.neighborhood}}, {{p.city}}");
+    addressLabel.push("{{p.label}}");
+    addressStreet.push("{{p.street}}, {{p.neighborhood}}");
+    data.push({ key: "lat", value: ""}, { key: "lng", value: ""});
+    var fulladdress = "{{p.street}} {{p.neighborhood}} {{p.city}} {{p.state}}";
+    getLatLng(fulladdress, {{p.zipcode}}, {{ forloop.counter0 }}, data, map);
+    {% endif %}
+
+    {% endfor %}
+
+    function getLatLng(myAddress, zipcode, i, data, map) {
+      geocoder.geocode({address: myAddress}, function(results, status) {
+        if (status == 'OK') {
+
+
+          infoWindowContent.push('<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h2 id="firstHeading" class="firstHeading">'+ addressLabel[i] +'</h2>'+
+            '<div id="bodyContent">'+
+            addressStreet[i] +
+            '</div>'+
+            '</div>');
+          var position = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+          var marker = new google.maps.Marker({
+            map: map,
+            title: addressLabel[i],
+            position: position
+          });
+          var infowindow = new google.maps.InfoWindow({
+            content: infoWindowContent[i]
+          });
+          marker.addListener('click', function() {
+            infowindow.open(map, marker);
+          });
+        }
+      });
+    }
+  }
+
+
+
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC-0xVzXEVm35LjVHFsxEAWbGv6_2ezxI&callback=initMap">
+</script> 
+
+{% endblock %}

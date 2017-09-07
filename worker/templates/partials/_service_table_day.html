@@ -1,0 +1,20 @@
+{% block details%}
+<div id="row_table">
+            {% for open_services in month_open_services %}
+                {% for service in open_services %}
+                    O-{{service.owner.first_name}}
+                {% endfor %}
+            {% endfor %}
+            {% for pending_services in month_pending_services %}
+                {% for service in pending_services %}
+                    P-{{service.owner.first_name}}
+                {% endfor %}
+            {% endfor %}
+            {% for closed_services in month_closed_services %}
+                {% for service in closed_services %}
+                    C-{{service.owner.first_name}}
+                {% endfor %}
+            {% endfor %}
+</div>
+{% endblock %}
+

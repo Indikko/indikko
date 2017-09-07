@@ -1,0 +1,355 @@
+{% extends "core/base.html" %}
+{% load staticfiles tz %}
+{% block title %}Indikko - Pesquisa de profissionais{% endblock %}
+
+{% block local_css %}
+<style>
+    .div_unactive{
+        background-image: url("/static/images/chkBoxUnselectedPeq.png");
+        background-repeat: no-repeat;
+        padding-left: 23px;
+    }
+    .div_active{
+        background-image: url("/static/images/chkBoxSelectedPeq.png");
+        background-repeat: no-repeat;
+        padding-left: 23px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+
+
+<h2>Buscar profissional em {{categoryname}}</h2>
+
+<form method="post" style="margin-top: 30px; margin-bottom: 20px;">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-lg-12">
+            <label class="h4" style="font-weight: bolder; color: #4e4e4e;" for="search_field">Procurar</label>
+            <input 
+                ng-model="criterioDeBusca"
+                type="text" 
+                class="form-control input-lg" 
+                name="search_field" 
+                placeholder="Nome ou sobrenome" />
+        </div>
+    </div>
+</form>
+
+<div class="container-fluid" style="background-color: #fff; padding: 10px; border-radius: 10px;" ng-controller="CategoryController">
+
+    <input type="hidden" id="user_id" value="{{user.id}}" />
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+            <span class="h4" style="font-weight: bolder; color: #4e4e4e;">Ordenar por:</span>
+            <div class="panel panel-default">
+                <div class="btn-group btn-group-justified">
+                    <a 
+                        href="#" 
+                        class="btn btn-primary" 
+                        ng-class="{'active': critOrderBy=='get_average_trust'}" 
+                        ng-click="orderBy('get_average_trust')">Confiança</a>
+                    <a 
+                        href="#" 
+                        class="btn btn-primary" 
+                        ng-class="{'active': critOrderBy=='get_average_quality'}" 
+                        ng-click="orderBy('get_average_quality')">Qualidade</a>
+                    <a 
+                        href="#" 
+                        class="btn btn-primary" 
+                        ng-class="{'active': critOrderBy=='get_average_punctuality'}" 
+                        ng-click="orderBy('get_average_punctuality')">Pontualidade</a>
+                    <a 
+                        href="#" 
+                        class="btn btn-primary" 
+                        ng-class="{'active': critOrderBy=='price'}" 
+                        ng-click="orderBy('price')">Preço</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3" >
+            <div class="panel panel-default" style="background-color: #fff;">
+                <div class="panel-body">
+                    <span class="h4" style="font-weight: bolder; color: #4e4e4e;">Habilidades</span>
+                    <div class="div_unactive"
+                        ng-class="{'div_active': lstSkillFilter.length<1}" 
+                        ng-click="addSkillFilter('')">
+                        Todos
+                    </div>
+                    {% for skill in skills %}
+                        <div class="div_unactive"
+                            ng-class="{'div_active': lstSkillFilter.indexOf('{{skill}}')>-1}" 
+                            ng-click="addSkillFilter('{{skill}}')" />{{skill|truncatechars:45}}
+                        </div>
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% if neighborhoods %}
+                    <div class="panel-body">
+                        <span class="h4" style="font-weight: bolder; color: #4e4e4e;">Bairros</span>
+                        <div 
+                            class="div_unactive" 
+                            ng-class="{'div_active': lstNeighborhoodFilter.length<1}" 
+                            ng-click="addNeighborhoodFilter('')">Todos</div>
+                        {% for nh in neighborhoods %}
+                        <div 
+                            class="div_unactive"
+                            ng-class="{'div_active': lstNeighborhoodFilter.indexOf('{{nh}}')>-1}" 
+                            ng-click="addNeighborhoodFilter('{{nh}}')">{{nh|truncatechars:45}}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-9" ng-init="init('{{category}}')">
+            <hr />
+            <div class="row" ng-repeat="w in category.workers  | filter:filterSkill | filter:filterNeighborhood | filter:{'fullname':criterioDeBusca} | orderBy:critOrderBy:ascendente" on-finish-render="exec_js">
+                <div style="border: 0px solid red;">
+                    <hr style="border: 1px solid #B661E6;" />
+                    <div class="row">
+                        <div class="col-sm-2" style="border-bottom: 1px solid #000;">
+                            {%verbatim%}
+                            <img ng-if="w.photo_url"
+                                style="width:130px; height: 130px; border: 1px solid #ccc;"
+                                ng-src="{{w.photo_url}}" />
+                            {%endverbatim%}
+                            <img ng-if="!w.photo_url"
+                                style="width:130px; height: 130px; border: 1px solid #ccc;"
+                                src="https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png" />
+                            <center class="h3">
+                                <a class="" 
+                                    href="/usuario/profissional/{%verbatim%}{{w.id}}{%endverbatim%}/" 
+                                    ng-bind="w.first_name"
+                                    style="font-family: 'Montserrat', sans-serif;">Nome</a>
+                            </center>
+                        </div>
+                        <div class="col-sm-8">
+                            <div style="border: 3px solid #000; width: 600px; height: 120px; margin-left: -15px;">
+                                <div style="border: 0px solid red; height: 100px; padding: 10px;">
+                                    <p ng-bind="w.get_first_place"
+                                       style="font-family: 'voga_medium', regular; font-size:2em;">Endereço</p>
+                                </div>
+                                <div style="
+                                    color: #B661E6; 
+                                    text-align:center; 
+                                    width: 200px; 
+                                    height: 24px; 
+                                    background-color: #fff; 
+                                    border: 0px solid #000; 
+                                    margin: 4px auto;
+                                    font-family: 'Montserrat', regular;">
+                                    <span ng-if="w.rate<1">Sem pontuação!</span>
+                                    <span ng-if="1<=w.rate && w.rate<2">
+                                       <span ng-bind="w.rate">Rate</span>
+                                           - Ruim</span>
+                                    <span ng-if="2<=w.rate && w.rate<3">
+                                       <span ng-bind="w.rate">Rate</span>
+                                           - Regular</span>
+                                    <span ng-if="3<=w.rate && w.rate<4">
+                                       <span ng-bind="w.rate">Rate</span>
+                                           - Boa</span>
+                                    <span ng-if="4<=w.rate && w.rate<5">
+                                       <span ng-bind="w.rate">Rate</span>
+                                           - Ótima</span>
+                                    <span ng-if="w.rate==5">
+                                       <span ng-bind="w.rate">Rate</span>
+                                           - Excelente</span>
+                                </div>
+                            </div>
+                            <p style="margin: 20px auto 10px; text-align: center;font-family: 'Josefin Slab', serif; font-size: 2em;">Quem indica</p>
+                            <div style="background-image: url({% static 'images/layout/seta_quem_indica.png' %});
+                                        background-repeat: no-repeat;
+                                        background-position: center;
+                                        width: 100%; height: 34px;"></div>
+                        </div>
+                        <div class="col-sm-2" style="border-bottom: 1px solid #000;">
+                            {%verbatim%}
+                            <img ng-if="w.photo_url"
+                                class="img-responsive img-circle"
+                                style="width:130px; height: 130px; border: 1px solid #ccc;"
+                                ng-src="{{w.photo_url}}" />
+                            {%endverbatim%}
+                            <img ng-if="!w.photo_url"
+                                class="img-responsive img-circle"
+                                style="width:130px; height: 130px; border: 1px solid #ccc;"
+                                src="https://s3.amazonaws.com/indicoapp/1467106865_silhouette5.png" />    
+                            <center class="h3">
+                                <a class="" 
+                                    href="/usuario/profissional/{%verbatim%}{{w.id}}{%endverbatim%}/" 
+                                    ng-bind="w.first_name"
+                                    style="font-family: 'Montserrat', sans-serif;">Nome</a>
+                                <span ng-bind="w.endorsement">teste</span>
+                            </center>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <img 
+                                data-toggle="popover" 
+                                title="Telefone" 
+                                data-content="{%verbatim%}{{w.phone_number}}{%endverbatim%}"
+                                id="btn_like_{%verbatim%}{{w.id}}{%endverbatim%}" 
+                                src="{% static 'images/layout/phone.png' %}"
+                                style="cursor:pointer;" />
+                            <!-- Trigger the modal with a button -->
+                            <a href="#" 
+                                data-toggle="modal" 
+                                data-target="#rankModal_{%verbatim%}{{w.id}}{%endverbatim%}"
+                                ng-show="w.showFormForEvaluate">
+                                <img 
+                                    id="btn_like_{%verbatim%}{{w.id}}{%endverbatim%}" 
+                                    src="{% static 'images/layout/like.png' %}" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row" ng-repeat="s in w.get_serviceprovided" style="padding:5px;">
+                        <div class="col-sm-4">
+                            <span ng-bind="s.service_type.description" style="font-size: 2em; font-family: 'Josefin Slab', serif;">Tipo</span>
+                        </div>
+                        <div class="col-sm-3">
+                            <img src="{% static 'images/layout/clock.png' %}" />
+                            <span ng-bind="s.duration" style="color: #A8A8A8; font-size: 1.2em; font-family: 'Archivo Black', sans-serif;">Duração</span>
+                            <span style="color: #A8A8A8; font-size: 1.2em; font-family: 'Archivo Black', sans-serif;"> Minutos</span>
+                        </div>
+                        <div class="col-sm-3 text-right">
+                            <p ng-bind="'R$ '+s.price" style="font-size: 2em; font-family: 'Josefin Slab', serif;">Preço</p>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-default" href="/usuario/agendamento/{%verbatim%}{{s.id}}{%endverbatim%}/">AGENDAR</a>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div id="rankModal_{%verbatim%}{{w.id}}{%endverbatim%}" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Avaliando o Trabalhador {%verbatim%}{{w.first_name}}{%endverbatim%}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Pontualidade</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row lead">
+                                                    <div id="stars-punctuality_{%verbatim%}{{w.id}}{%endverbatim%}" class="starrr"></div>
+                                                    Você avaliou este item com <span ng-model="w.form.punctuality" id="count-stars-punctuality_{%verbatim%}{{w.id}}{%endverbatim%}">0</span> estrela(s)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Habilidade</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-hability_{%verbatim%}{{w.id}}{%endverbatim%}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-hability_{%verbatim%}{{w.id}}{%endverbatim%}">0</span> estrela(s)
+
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Profissionalismo</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-profissionality_{%verbatim%}{{w.id}}{%endverbatim%}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-profissionality_{%verbatim%}{{w.id}}{%endverbatim%}">0</span> estrela(s)
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Confiança</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-trust_{%verbatim%}{{w.id}}{%endverbatim%}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-trust_{%verbatim%}{{w.id}}{%endverbatim%}">0</span> estrela(s)
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>Preço</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                            <div class="row lead">
+                                                <div id="stars-price_{%verbatim%}{{w.id}}{%endverbatim%}" class="starrr"></div>
+                                                Você avaliou este item com <span id="count-stars-price_{%verbatim%}{{w.id}}{%endverbatim%}">0</span> estrela(s)
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <strong>Marque a caixa se recomenda esse profissional</strong>
+                                                <input id="endorsement_{%verbatim%}{{w.id}}{%endverbatim%}" type="checkbox" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <strong>Comentários</strong>
+												<textarea id="comments_{%verbatim%}{{w.id}}{%endverbatim%}" 
+													ng-model="w.comments"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+								<div class="modal-footer">
+                                    <button 
+										type="button" 
+										class="btn btn-default" 
+										ng-disabled="!w.comments"
+                                        id="btn_send_rank_{%verbatim%}{{w.id}}{%endverbatim%}">Enviar</button>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-default" 
+                                        data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- TODO: call this script after ng-repeat ends render -->
+                <script>
+
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block jsBlock %}
+
+<!-- AngularJS -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/i18n/angular-locale_pt-br.js"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/indico.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/directives/onfinishrender.directive.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/hirer.module.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/worker/worker.module.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/services/hirer.service.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/controllers/hirer.controller.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/starrr_indico.js' %}"></script>
+<script type="text/javascript">
+</script>
+
+{% endblock %}

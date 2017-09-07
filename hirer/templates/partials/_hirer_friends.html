@@ -1,0 +1,11 @@
+{% load staticfiles %}
+
+<div class="common">
+    <strong>{{total}} amigos</strong><br />
+    <strong>3 VIP</strong>
+</div>
+<div class="common-social">
+    {% for f in friends %}
+    <img src="{{f.photo}}" />
+    {% endfor %}
+</div>

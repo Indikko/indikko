@@ -1,0 +1,105 @@
+{% extends "core/base.html" %}
+{% block title %}Indico{% endblock %}
+
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% load staticfiles %}
+<!-- Font Awesome -->
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
+<!-- Calendar -->
+<link href="{% static 'css/calendar.css'%}" rel="stylesheet">
+
+<input id="userId" type="hidden" value="{{ user.id }}">
+
+{% if user.is_worker %}
+<div class="row">
+        <div class="col-sm-5" data-ng-controller="HomeWorkerController">
+            <input id="userId" type="hidden" value="{{ user.id }}">
+            <hr>
+            <div style="text-align:center">
+                <h1>MINHA AGENDA</h1>
+            </div>
+            <hr>
+            <calendar class="center-block" selected="day" callback-fn="selectDate(day)"
+                worker="worker" user="user">
+            </calendar>
+        </div>
+        <div id="day-service" class="col-sm-7" style="margin-top: 20px">
+        </div>
+    </div>
+    <div id="service-detail">
+    </div>
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5" data-ng-controller="HirerCalendarController">
+        <input id="userId" type="hidden" value="{{ user.id }}">
+            <hr>
+            <div style="text-align:center">
+                <h1>MINHA AGENDA</h1>
+            </div>
+            <hr>
+            <calendar class="center-block" selected="day" callback-fn="selectDate(day)"
+                worker="worker" user="user">
+            </calendar>
+        </div>
+    </div>
+    <div id="service-detail">
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block jsBlock %}
+{% load staticfiles %}
+<!-- Moment -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment-with-locales.min.js"></script>
+<!-- AngularJS -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/i18n/angular-locale_pt-br.js"></script>
+<!-- Indico -->
+<script type="text/javascript" src="{% static 'js/angularjs/indico.js' %}"></script>
+<!-- hirer -->
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/hirer.module.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/services/hirer.service.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/controllers/hirer.controller.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/hirer/controllers/hirer.calendar.controller.js' %}"></script>
+<!-- Worker -->
+<script type="text/javascript" src="{% static 'js/angularjs/worker/worker.module.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/worker/services/worker.service.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/directives/calendar.directive.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/angularjs/worker/controllers/worker.controller.js' %}"></script>
+<script>
+    $.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+    });
+</script>
+{% endblock %}

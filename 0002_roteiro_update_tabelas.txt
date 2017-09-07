@@ -1,0 +1,14 @@
+core_servicecategory
+core_evaluationtemplate
+core_evaluationtemplateitem
+core_skill
+core_userdocuments
+core_indicouser
+core_indicouser_skills
+core_indicouser_categories
+core_notification
+core_place
+core_subscription
+core_reference
+core_relationship
+social_auth_usersocialauth

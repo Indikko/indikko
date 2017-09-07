@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+{% block title %}Indikko{% endblock %}
+
+{% block content %}
+
+{% load app_extras %}
+
+<style type="text/css">
+  #id_number{
+    width: 200px;
+    font-size: 18px;
+  }
+  label{
+    font-size: 18px;
+  }
+</style>
+
+<section id="servicerequest" class="no-margin">
+  <div class="container">
+      <h3>Informe seu telefone</h3>
+      {{ form.non_field_errors }}
+      <form method="POST" class="form-indico">
+          <div class="row">
+            <div class="col-sm-2">
+              {% csrf_token %}
+              <label>Telefone</label>
+            </div>
+            <div class="col-sm-8">
+            <div class="form-group">
+              {{ form.number }}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <input type="submit" value="Salvar" class="btn btn-radius pull-right"/>
+            </div>
+          </div>
+      </form>
+  </div>
+</section>
+
+<script type="text/javascript">
+  $("#id_number").mask("(99) 99999-9999");
+</script>
+
+{% endblock %}
+

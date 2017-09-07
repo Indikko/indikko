@@ -1,0 +1,9 @@
+Prezado {{ username }},
+
+Você solicitou a redefinição da sua senha no www.indikko.com
+
+Para efetuar o reset clique no link abaixo:
+
+http{% if secure %}s{% endif %}://{{ site.domain }}{% url "password_reset_reset" token %}
+
+Caso não tenha solicitado a redefinição de senha, ignore esse e-mail.
